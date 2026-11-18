@@ -1,6 +1,6 @@
 /* ==========================================================================
-   WARM EDITORIAL SPEAKER SHOWCASE — STYLESHEET
-   Palette: Alabaster Paper, Warm Linen, Espresso Ink & Collegiate Terracotta
+   WARM EDITORIAL SPEAKER SHOWCASE — EXTENDED STYLESHEET
+   Preserving: Alabaster Paper, Warm Linen, Espresso Ink & Collegiate Terracotta
    ========================================================================== */
 
 :root {
@@ -33,7 +33,7 @@
   --shadow-soft: 0 10px 30px -16px rgba(28, 25, 23, 0.14);
   --shadow-float: 0 20px 50px -15px rgba(28, 25, 23, 0.25);
 
-  --container-max: 1180px;
+  --container-max: 1220px;
   --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -168,7 +168,7 @@ button {
   margin: 0;
   font-size: 1.05rem;
   color: var(--ink-secondary);
-  max-width: 56ch;
+  max-width: 60ch;
 }
 
 /* ==========================================================================
@@ -181,7 +181,7 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   border-radius: var(--radius-pill);
   font-weight: 500;
   transition: transform 0.2s var(--ease-editorial), background-color 0.2s ease,
@@ -219,11 +219,12 @@ button {
 }
 
 .btn-ink {
-  padding: 0.5rem 1rem;
+  padding: 0.45rem 0.95rem;
   background: var(--ink-primary);
   color: var(--bg-paper);
   border: 1px solid var(--ink-primary);
-  font-size: 0.83rem;
+  font-size: 0.82rem;
+  line-height: 1;
 }
 
 .btn-ink:hover {
@@ -232,11 +233,12 @@ button {
 }
 
 .btn-ghost {
-  padding: 0.48rem 0.9rem;
+  padding: 0.45rem 0.85rem;
   background: transparent;
   color: var(--ink-secondary);
   border: 1px solid var(--rule);
-  font-size: 0.83rem;
+  font-size: 0.82rem;
+  line-height: 1;
 }
 
 .btn-ghost:hover {
@@ -267,13 +269,13 @@ button {
 }
 
 /* ==========================================================================
-   MAGAZINE MASTHEAD NAVIGATION
+   MAGAZINE MASTHEAD NAVIGATION — CRISP ALIGNMENT & NO-WRAP
    ========================================================================== */
 .masthead {
   position: sticky;
   top: 0;
   z-index: 500;
-  background: rgba(250, 247, 242, 0.88);
+  background: rgba(250, 247, 242, 0.94);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--rule);
@@ -284,13 +286,15 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 1.25rem;
-  min-height: 4.1rem;
+  min-height: 4.15rem;
 }
 
 .masthead__brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.6rem;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .masthead__dot {
@@ -304,31 +308,41 @@ button {
 .masthead__title {
   font-family: var(--font-serif);
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1.08rem;
   letter-spacing: -0.01em;
+  white-space: nowrap;
+  line-height: 1;
 }
 
 .masthead__issue {
   font-family: var(--font-mono);
   font-size: 0.68rem;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.08em;
   color: var(--ink-muted);
-  padding: 0.16rem 0.45rem;
+  padding: 0.18rem 0.48rem;
   border: 1px solid var(--rule);
   border-radius: var(--radius-sm);
+  white-space: nowrap;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
 }
 
 .masthead__nav {
   display: flex;
   align-items: center;
-  gap: 1.75rem;
+  gap: 1.25rem;
+  flex-wrap: nowrap;
 }
 
 .masthead__nav a {
-  font-size: 0.9rem;
+  font-size: 0.86rem;
+  font-weight: 500;
   color: var(--ink-secondary);
   position: relative;
-  padding-block: 0.25rem;
+  padding-block: 0.35rem;
+  white-space: nowrap;
+  line-height: 1.2;
   transition: color 0.2s ease;
 }
 
@@ -356,7 +370,14 @@ button {
 .masthead__actions {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.45rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.masthead__action-btn {
+  height: 32px;
+  padding: 0 0.75rem;
 }
 
 /* ==========================================================================
@@ -404,6 +425,7 @@ button {
   padding: 0.36rem 0.85rem;
   border-radius: var(--radius-pill);
   margin-bottom: 1.45rem;
+  white-space: nowrap;
 }
 
 .hero__headline {
@@ -425,7 +447,7 @@ button {
   line-height: 1.48;
   color: var(--ink-secondary);
   margin: 0 0 2rem;
-  max-width: 46ch;
+  max-width: 48ch;
 }
 
 .hero__byline {
@@ -448,7 +470,7 @@ button {
 
 .hero__byline-name {
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--ink-primary);
 }
 
@@ -566,7 +588,7 @@ button {
 }
 
 /* ==========================================================================
-   OPENING EDITORIAL LETTER & FEATURE SPREAD
+   OPENING EDITORIAL LETTER & GRATITUDE (SLIDE 2)
    ========================================================================== */
 .letter-section {
   padding: 4.5rem 0 5.5rem;
@@ -580,7 +602,6 @@ button {
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr);
   gap: clamp(2rem, 5vw, 4.5rem);
   align-items: start;
-  margin-bottom: 3.5rem;
 }
 
 .letter__pullquote {
@@ -620,7 +641,7 @@ button {
   margin-bottom: 0;
 }
 
-/* Magazine Drop Cap on first paragraph */
+/* Drop Cap on first paragraph */
 .letter__body-col p:first-child::first-letter {
   font-family: var(--font-serif);
   float: left;
@@ -632,43 +653,106 @@ button {
   font-weight: 500;
 }
 
-.feature-spread {
-  margin: 0;
+/* ==========================================================================
+   PHILOSOPHY: BUSTING THE MYTH (SLIDES 3 & 4)
+   ========================================================================== */
+.myth-section {
+  padding: 5rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.myth-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: stretch;
+}
+
+.myth-quote-box {
   background: var(--bg-card);
-  padding: 0.85rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.75rem, 3.5vw, 2.75rem);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.myth-quote-box::before {
+  content: "“";
+  font-family: var(--font-serif);
+  font-size: 6rem;
+  line-height: 1;
+  position: absolute;
+  top: -1.2rem;
+  left: 1.2rem;
+  color: var(--accent-soft);
+  pointer-events: none;
+}
+
+.myth-quote-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+  line-height: 1.18;
+  color: var(--accent-dark);
+  margin: 0 0 0.6rem;
+}
+
+.myth-quote-sub {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 1.2rem;
+}
+
+.myth-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  justify-content: center;
+}
+
+.myth-card {
+  background: var(--bg-card);
   border: 1px solid var(--rule);
   border-radius: var(--radius-md);
+  padding: 1.35rem 1.6rem;
+  border-left: 3px solid var(--accent);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.myth-card:hover {
+  transform: translateY(-2px);
   box-shadow: var(--shadow-soft);
 }
 
-.feature-spread__media {
-  aspect-ratio: 16 / 9;
-  max-height: 480px;
-  width: 100%;
-  overflow: hidden;
-  border-radius: 6px;
-  background: var(--bg-tint);
+.myth-card__num {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
 }
 
-.feature-spread__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.myth-card__title {
+  font-family: var(--font-serif);
+  font-size: 1.24rem;
+  margin: 0 0 0.45rem;
+  color: var(--ink-primary);
 }
 
-.feature-spread__caption {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem 1.5rem;
-  padding: 0.85rem 0.35rem 0.2rem;
-  font-size: 0.86rem;
-  color: var(--ink-muted);
+.myth-card__body {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--ink-secondary);
 }
 
 /* ==========================================================================
-   CENTERPIECE: MY JOURNEY TIMELINE
+   CENTERPIECE: MY JOURNEY TIMELINE — MATHEMATICAL SPINE ALIGNMENT
    ========================================================================== */
 .journey-section {
   padding: 5.5rem 0 6rem;
@@ -705,6 +789,7 @@ button {
   padding: 0.46rem 0.95rem;
   border-radius: var(--radius-pill);
   transition: all 0.2s var(--ease-editorial);
+  white-space: nowrap;
 }
 
 .era-pill:hover {
@@ -736,7 +821,7 @@ button {
   border-color: var(--accent-dark);
 }
 
-/* Two-column Journey Layout: Sticky Index Rail + Timeline Spine */
+/* Two-column Journey Layout */
 .journey__layout {
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr);
@@ -825,7 +910,7 @@ button {
 /* Vertical Timeline Spine & Chapter Cards */
 .timeline {
   position: relative;
-  padding-left: 2.6rem;
+  padding-left: 2.75rem;
   display: flex;
   flex-direction: column;
   gap: 2.75rem;
@@ -834,10 +919,10 @@ button {
 .timeline::before {
   content: "";
   position: absolute;
-  top: 0.85rem;
-  bottom: 1.5rem;
-  left: 0.72rem;
-  width: 1px;
+  top: 1.5rem;
+  bottom: 2rem;
+  left: 0.75rem;
+  width: 2px;
   background: linear-gradient(
     to bottom,
     var(--accent) 0%,
@@ -858,24 +943,26 @@ button {
   scroll-margin-top: 5.5rem;
 }
 
+/* Bullet Dot — Mathematically Centered on Spine Line */
 .chapter-card::before {
   content: "";
   position: absolute;
-  left: -2.26rem;
-  top: 2rem;
-  width: 15px;
-  height: 15px;
+  left: calc(-2.75rem + 0.75rem + 1px - 7px);
+  top: 1.85rem;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: var(--bg-paper);
   border: 2px solid var(--rule-strong);
-  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  box-sizing: border-box;
+  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .chapter-card.is-current::before,
 .chapter-card:hover::before {
   border-color: var(--accent);
   background: var(--accent);
-  transform: scale(1.18);
+  transform: scale(1.2);
   box-shadow: 0 0 0 5px var(--accent-soft);
 }
 
@@ -985,7 +1072,7 @@ body.stage-mode .chapter-card.is-current {
   color: var(--ink-primary);
 }
 
-/* Expandable Student Takeaway Accordion */
+/* Expandable Student Takeaway Drawer */
 .lesson-drawer {
   border: 1px solid var(--rule);
   border-radius: var(--radius-md);
@@ -1084,30 +1171,302 @@ body.stage-mode .chapter-card.is-current {
 }
 
 /* ==========================================================================
-   POSTSCRIPT: NOTES TO MY COLLEGE SELF
+   PORTFOLIO & WORK SHOWCASE (SLIDE 10: T-SHIRTS & SLIDE 8: LOGOS)
    ========================================================================== */
-.notes-section {
-  padding: 4.5rem 0 5.5rem;
+.work-section {
+  padding: 5.5rem 0;
   background: var(--bg-linen);
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
 }
 
+.tshirt-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 3.5rem;
+  align-items: stretch;
+}
+
+.tshirt-card {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tshirt-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-float);
+}
+
+.tshirt-card__img-wrap {
+  aspect-ratio: 1 / 1;
+  background: #f5f5f5;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 0.8rem;
+  display: grid;
+  place-items: center;
+}
+
+.tshirt-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.tshirt-card:hover .tshirt-card__img {
+  transform: scale(1.05);
+}
+
+.tshirt-card__title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  line-height: 1.25;
+  margin: 0 0 0.35rem;
+  color: var(--ink-primary);
+}
+
+.tshirt-card__specs {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  margin-bottom: 0.5rem;
+}
+
+.tshirt-card__desc {
+  font-size: 0.84rem;
+  color: var(--ink-secondary);
+  line-height: 1.45;
+  margin: 0;
+  margin-top: auto;
+}
+
+/* Logo Design Case Study */
+.logo-study-block {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.85rem, 3.5vw, 3rem);
+  box-shadow: var(--shadow-soft);
+}
+
+.logo-concepts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.35rem;
+  margin-top: 1.75rem;
+  align-items: stretch;
+}
+
+.logo-concept-card {
+  padding: 1.35rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  background: var(--bg-paper);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.logo-concept-card__step {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--accent);
+  margin-bottom: 0.3rem;
+}
+
+.logo-concept-card__name {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  margin: 0 0 0.35rem;
+  color: var(--ink-primary);
+}
+
+.logo-concept-card__formula {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: var(--accent-dark);
+  text-transform: uppercase;
+  margin-bottom: 0.7rem;
+}
+
+.logo-concept-card__desc {
+  font-size: 0.88rem;
+  color: var(--ink-secondary);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* ==========================================================================
+   PLACEMENT SPOTLIGHT (SLIDE 12: DBUU PLACEMENT)
+   ========================================================================== */
+.placement-section {
+  padding: 5rem 0;
+}
+
+.placement-banner {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.75rem, 4vw, 3.25rem);
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+.placement-banner__headline {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  line-height: 1.15;
+  margin: 0.6rem 0 1rem;
+}
+
+.placement-banner__lead {
+  font-size: 1.05rem;
+  color: var(--ink-secondary);
+  margin: 0 0 1.5rem;
+}
+
+.placement-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 1.75rem;
+}
+
+.placement-pill {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+  background: var(--bg-linen);
+  border: 1px solid var(--rule);
+  color: var(--ink-primary);
+  white-space: nowrap;
+}
+
+.placement-pill.highlight {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+  color: var(--accent-dark);
+  font-weight: 600;
+}
+
+.placement-poster-frame {
+  margin: 0;
+  background: #ffffff;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  padding: 0.6rem;
+  box-shadow: var(--shadow-float);
+  max-width: 340px;
+  margin-inline: auto;
+}
+
+.placement-poster-frame img {
+  width: 100%;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   6 KEY LESSONS FOR JUNIORS (SLIDE 13)
+   ========================================================================== */
+.lessons-section {
+  padding: 5.5rem 0;
+  background: var(--bg-linen);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.lessons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.35rem;
+  margin-top: 2.5rem;
+  align-items: stretch;
+}
+
+.lesson-box {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  padding: 1.6rem;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.lesson-box:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-border);
+}
+
+.lesson-box__num {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.65rem;
+}
+
+.lesson-box__title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  line-height: 1.25;
+  color: var(--ink-primary);
+  margin: 0 0 0.55rem;
+}
+
+.lesson-box__body {
+  margin: 0;
+  font-size: 0.94rem;
+  color: var(--ink-secondary);
+  line-height: 1.5;
+  margin-top: auto;
+}
+
+/* ==========================================================================
+   POSTSCRIPT: NOTES TO MY COLLEGE SELF (SLIDE 14)
+   ========================================================================== */
+.notes-section {
+  padding: 4.5rem 0 5.5rem;
+}
+
 .notes__heading {
-  max-width: 24ch;
+  max-width: 28ch;
   margin-bottom: 2.75rem;
 }
 
 .notes-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   border-top: 1px solid var(--rule-strong);
   border-bottom: 1px solid var(--rule-strong);
+  align-items: stretch;
 }
 
 .note-card {
-  padding: 2rem 1.85rem;
+  padding: 2rem 1.65rem;
   border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .note-card:first-child {
@@ -1132,7 +1491,7 @@ body.stage-mode .chapter-card.is-current {
 .note-card__title {
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: 1.32rem;
+  font-size: 1.22rem;
   line-height: 1.28;
   margin: 0 0 0.75rem;
   color: var(--ink-primary);
@@ -1140,8 +1499,9 @@ body.stage-mode .chapter-card.is-current {
 
 .note-card__body {
   margin: 0;
-  font-size: 0.96rem;
+  font-size: 0.94rem;
   color: var(--ink-secondary);
+  margin-top: auto;
 }
 
 /* ==========================================================================
@@ -1149,6 +1509,8 @@ body.stage-mode .chapter-card.is-current {
    ========================================================================== */
 .connect-section {
   padding: 5.5rem 0 5rem;
+  background: var(--bg-linen);
+  border-top: 1px solid var(--rule);
 }
 
 .connect-card {
@@ -1286,10 +1648,6 @@ body.stage-mode .chapter-card.is-current {
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.stage-hud[hidden] {
-  display: none;
-}
-
 .stage-hud__status {
   display: flex;
   flex-direction: column;
@@ -1356,10 +1714,6 @@ body.stage-mode .chapter-card.is-current {
   display: grid;
   place-items: center;
   padding: 1.25rem;
-}
-
-.modal-backdrop[hidden] {
-  display: none;
 }
 
 .modal-card {
@@ -1488,11 +1842,152 @@ body.stage-mode .chapter-card.is-current {
 }
 
 /* ==========================================================================
-   RESPONSIVE BREAKPOINTS
+   PRESENTATION PAGE STYLES (MATCHING 15 SLIDES OF THE PDF)
    ========================================================================== */
+.deck-view {
+  padding: 2.5rem 0 6rem;
+}
+
+.deck-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.deck-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.deck-counter {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 0.4rem 0.85rem;
+  background: var(--bg-linen);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.slide-stage-container {
+  width: 100%;
+  max-width: 980px;
+  margin-inline: auto;
+}
+
+.slide-frame {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: clamp(2rem, 5vw, 4rem);
+  box-shadow: var(--shadow-float);
+  aspect-ratio: 16 / 9;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-frame__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1rem;
+}
+
+.slide-frame__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--rule);
+  padding-top: 1rem;
+}
+
+.slide-frame__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+/* Slide thumbnails rail */
+.deck-thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.85rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--rule);
+}
+
+.thumb-card {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.thumb-card:hover,
+.thumb-card.is-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.thumb-card__num {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+}
+
+.thumb-card__title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 0.2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS & ADAPTIVE NAVIGATION
+   ========================================================================== */
+@media (max-width: 1160px) {
+  .masthead__nav {
+    gap: 0.85rem;
+  }
+  .masthead__nav a {
+    font-size: 0.82rem;
+  }
+  .tshirt-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .notes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .note-card:nth-child(2) {
+    border-right: none;
+  }
+}
+
 @media (max-width: 980px) {
   .hero__grid,
   .letter__grid,
+  .myth-grid,
+  .placement-banner,
   .connect-card {
     grid-template-columns: 1fr;
   }
@@ -1513,6 +2008,18 @@ body.stage-mode .chapter-card.is-current {
     align-items: flex-start;
   }
 
+  .logo-concepts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lessons-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tshirt-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .notes-grid {
     grid-template-columns: 1fr;
   }
@@ -1526,14 +2033,21 @@ body.stage-mode .chapter-card.is-current {
   .note-card:last-child {
     border-bottom: none;
   }
+
+  .slide-frame {
+    aspect-ratio: auto;
+    min-height: auto;
+  }
+
+  /* Compact nav for tablet view */
+  .masthead__nav a[href="#myth"],
+  .masthead__nav a[href="#lessons"] {
+    display: none;
+  }
 }
 
 @media (max-width: 760px) {
   .masthead__nav {
-    display: none;
-  }
-
-  .masthead__issue {
     display: none;
   }
 
@@ -1548,16 +2062,16 @@ body.stage-mode .chapter-card.is-current {
   }
 
   .timeline {
-    padding-left: 1.7rem;
+    padding-left: 2rem;
     gap: 1.85rem;
   }
 
   .timeline::before {
-    left: 0.45rem;
+    left: 0.5rem;
   }
 
   .chapter-card::before {
-    left: -1.55rem;
+    left: calc(-2rem + 0.5rem + 1px - 6px);
     width: 12px;
     height: 12px;
   }
@@ -1576,5 +2090,9 @@ body.stage-mode .chapter-card.is-current {
 
   .stage-hud__status {
     min-width: auto;
+  }
+
+  .tshirt-grid {
+    grid-template-columns: 1fr;
   }
 }

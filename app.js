@@ -45,7 +45,7 @@
     document.title = data.meta.siteTitle || `${data.speaker.name} — Speaker Showcase`;
 
     // Masthead
-    setText("masthead-name", data.speaker.name);
+    setText("masthead-name", data.speaker.shortName || data.speaker.name);
     setText("masthead-issue", data.meta.issueNumber);
 
     // Hero
@@ -88,10 +88,10 @@
         .join("");
     }
 
-    // Editorial letter
+    // Editorial letter (Slide 2: About Me)
     setText("letter-lead", `“${data.speaker.letterLead}”`);
     setText("letter-sig-name", `— ${data.speaker.firstName || data.speaker.name}`);
-    setText("letter-sig-meta", `${data.event.alumniBadge}`.toUpperCase());
+    setText("letter-sig-meta", (data.speaker.handle || data.event.alumniBadge).toUpperCase());
 
     const letterBodyEl = $("letter-body");
     if (letterBodyEl && Array.isArray(data.speaker.letterBody)) {
@@ -100,13 +100,93 @@
         .join("");
     }
 
-    const featureImg = $("feature-image");
-    if (featureImg && data.speaker.featureImage) {
-      featureImg.src = data.speaker.featureImage;
-    }
-    setText("feature-image-caption", data.speaker.featureImageCaption);
+    // Busting the Myth (Slides 3 & 4)
+    if (data.philosophy) {
+      setText("myth-eyebrow", data.philosophy.eyebrow);
+      setText("myth-heading", data.philosophy.heading);
+      setText("myth-subheading", data.philosophy.subheading);
+      setText("myth-lead", data.philosophy.lead);
 
-    // Notes to students
+      const mythList = $("myth-insights");
+      if (mythList && Array.isArray(data.philosophy.insights)) {
+        mythList.innerHTML = data.philosophy.insights
+          .map(
+            (item) => `
+            <div class="myth-card reveal">
+              <div class="myth-card__num">INSIGHT ${escapeHtml(item.number)}</div>
+              <h3 class="myth-card__title">${escapeHtml(item.title)}</h3>
+              <p class="myth-card__body">${escapeHtml(item.body)}</p>
+            </div>
+          `
+          )
+          .join("");
+      }
+    }
+
+    // T-Shirt Portfolio Showcase (Slide 10)
+    const tshirtGrid = $("tshirt-grid");
+    if (tshirtGrid && Array.isArray(data.tshirtPortfolio)) {
+      tshirtGrid.innerHTML = data.tshirtPortfolio
+        .map(
+          (item) => `
+          <article class="tshirt-card reveal">
+            <div class="tshirt-card__img-wrap">
+              <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" class="tshirt-card__img" loading="lazy" />
+            </div>
+            <h4 class="tshirt-card__title">${escapeHtml(item.title)}</h4>
+            <div class="tshirt-card__specs">${escapeHtml(item.specs)}</div>
+            <p class="tshirt-card__desc">${escapeHtml(item.desc)}</p>
+          </article>
+        `
+        )
+        .join("");
+    }
+
+    // Night Club Logo Case Study (Slide 8)
+    if (data.logoCaseStudy) {
+      setText("logo-eyebrow", data.logoCaseStudy.eyebrow);
+      setText("logo-title", data.logoCaseStudy.title);
+      setText("logo-lead", data.logoCaseStudy.lead);
+
+      const logoContainer = $("logo-concepts");
+      if (logoContainer && Array.isArray(data.logoCaseStudy.concepts)) {
+        logoContainer.innerHTML = data.logoCaseStudy.concepts
+          .map(
+            (c) => `
+            <div class="logo-concept-card">
+              <div class="logo-concept-card__step">${escapeHtml(c.step)}</div>
+              <h4 class="logo-concept-card__name">${escapeHtml(c.name)}</h4>
+              <div class="logo-concept-card__formula">${escapeHtml(c.formula)}</div>
+              <p class="logo-concept-card__desc">${escapeHtml(c.desc)}</p>
+            </div>
+          `
+          )
+          .join("");
+      }
+    }
+
+    // 6 Lessons for Juniors (Slide 13)
+    if (data.keyLessons) {
+      setText("lessons-eyebrow", data.keyLessons.eyebrow);
+      setText("lessons-heading", data.keyLessons.heading);
+
+      const lessonsGrid = $("lessons-grid");
+      if (lessonsGrid && Array.isArray(data.keyLessons.items)) {
+        lessonsGrid.innerHTML = data.keyLessons.items
+          .map(
+            (lesson) => `
+            <div class="lesson-box reveal">
+              <div class="lesson-box__num">LESSON ${escapeHtml(lesson.number)}</div>
+              <h3 class="lesson-box__title">${escapeHtml(lesson.title)}</h3>
+              <p class="lesson-box__body">${escapeHtml(lesson.body)}</p>
+            </div>
+          `
+          )
+          .join("");
+      }
+    }
+
+    // Notes to Students / Guiding Rules (Slide 14)
     if (data.notesToStudents) {
       setText("notes-eyebrow", data.notesToStudents.eyebrow);
       setText("notes-heading", data.notesToStudents.heading);
@@ -131,14 +211,6 @@
       setText("connect-eyebrow", data.connect.eyebrow);
       setText("connect-heading", data.connect.heading);
       setText("connect-subtext", data.connect.subtext);
-
-      const emailBtn = $("connect-email-btn");
-      if (emailBtn && data.connect.email) {
-        const subject = encodeURIComponent(
-          `Hello from ${data.event.collegeShort || "campus"} talk!`
-        );
-        emailBtn.href = `mailto:${data.connect.email}?subject=${subject}`;
-      }
 
       const linksContainer = $("connect-links");
       if (linksContainer && Array.isArray(data.connect.links)) {
@@ -167,11 +239,7 @@
 
     // Footer colophon
     setText("footer-speaker-name", data.speaker.name);
-    setText("footer-event-name", data.event.eventName);
-    setText(
-      "footer-college-short",
-      (data.event.collegeShort || data.event.collegeName).toUpperCase()
-    );
+    setText("footer-event-name", data.event.talkTitle);
   }
 
   /* ==========================================================================
@@ -218,7 +286,7 @@
         ? data.timeline
         : data.timeline.filter((c) => c.era === activeEra);
 
-    // Render sticky chapter index rail
+    // Sticky chapter rail
     railEl.innerHTML = chapters
       .map(
         (ch, idx) => `
@@ -245,7 +313,7 @@
       });
     });
 
-    // Render timeline chapter cards
+    // Timeline cards
     timelineEl.innerHTML = chapters
       .map((ch, idx) => {
         const isOpen = allLessonsExpanded || stageMode || idx === 0;
@@ -318,7 +386,7 @@
               ch.marginNote
                 ? `
               <p class="margin-note">
-                <span class="margin-note__mark">NOTE</span>
+                <span class="margin-note__mark">SLIDE</span>
                 <span>${escapeHtml(ch.marginNote)}</span>
               </p>
             `
@@ -331,7 +399,7 @@
       })
       .join("");
 
-    // Bind expandable lesson drawers
+    // Bind expandable takeaway drawers
     timelineEl.querySelectorAll(".lesson-drawer__toggle").forEach((btn) => {
       btn.addEventListener("click", () => {
         const drawer = btn.closest(".lesson-drawer");
@@ -431,12 +499,13 @@
   }
 
   /* ==========================================================================
-     5. STAGE MODE (PROJECTOR WALKTHROUGH WITH KEYBOARD NAVIGATION)
+     5. STAGE MODE
      ========================================================================== */
   function buildStageStops() {
     stageStops = [
       { id: "top", label: "Cover" },
-      { id: "story", label: "The Letter" },
+      { id: "story", label: "About Me" },
+      { id: "myth", label: "Why Fine Arts" },
       ...Array.from(document.querySelectorAll(".chapter-card")).map((card) => {
         const ch = data.timeline.find((item) => item.id === card.id);
         return {
@@ -444,7 +513,10 @@
           label: ch ? `Chapter ${ch.chapterNumber}` : card.id,
         };
       }),
-      { id: "notes", label: "Notes" },
+      { id: "work", label: "Work & T-Shirts" },
+      { id: "placement", label: "Placement" },
+      { id: "lessons", label: "6 Lessons" },
+      { id: "notes", label: "Guiding Rules" },
       { id: "connect", label: "Connect & Q&A" },
     ];
     updateStageHud();
@@ -461,7 +533,6 @@
     if (hud) hud.hidden = !enabled;
 
     if (enabled) {
-      // Open all student takeaways automatically so they're readable on a projector
       document.querySelectorAll(".lesson-drawer").forEach((drawer) => {
         drawer.classList.add("is-open");
         const toggle = drawer.querySelector(".lesson-drawer__toggle");
@@ -498,16 +569,11 @@
 
   function setupStageMode() {
     const toggleBtn = $("stage-mode-btn");
-    const railTrigger = $("rail-stage-trigger");
     const exitBtn = $("stage-exit-btn");
     const prevBtn = $("stage-prev-btn");
     const nextBtn = $("stage-next-btn");
 
     toggleBtn?.addEventListener("click", () => setStageMode(!stageMode));
-    railTrigger?.addEventListener("click", () => {
-      setStageMode(true);
-      goToStageStop(2); // Jump straight to Chapter 01
-    });
     exitBtn?.addEventListener("click", () => setStageMode(false));
     prevBtn?.addEventListener("click", () => goToStageStop(stageIndex - 1));
     nextBtn?.addEventListener("click", () => goToStageStop(stageIndex + 1));
