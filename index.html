@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Full Circle — Alumni Speaker Showcase</title>
+    <meta
+      name="description"
+      content="An editorial homecoming story and journey timeline from college hallways to the speaker stage."
+    />
+
+    <!-- Warm Editorial Typography: Fraunces (Display Serif), Plus Jakarta Sans (Body), IBM Plex Mono (Metadata) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Subtle tactile paper grain overlay -->
+    <div class="paper-grain" aria-hidden="true"></div>
+
+    <!-- Top reading progress hairline -->
+    <div class="reading-progress" aria-hidden="true">
+      <div class="reading-progress__bar" id="reading-progress-bar"></div>
+    </div>
+
+    <!-- Magazine Masthead Navigation -->
+    <header class="masthead" id="masthead">
+      <div class="masthead__inner container">
+        <a href="#top" class="masthead__brand" aria-label="Back to top">
+          <span class="masthead__dot" aria-hidden="true"></span>
+          <span class="masthead__title" id="masthead-name">Aarav Sharma</span>
+          <span class="masthead__issue" id="masthead-issue">VOL. 01</span>
+        </a>
+
+        <nav class="masthead__nav" aria-label="Primary navigation">
+          <a href="#story">The Letter</a>
+          <a href="#journey">My Journey</a>
+          <a href="#notes">Notes</a>
+          <a href="#connect">Connect</a>
+        </nav>
+
+        <div class="masthead__actions">
+          <button
+            type="button"
+            class="btn-ghost"
+            id="stage-mode-btn"
+            aria-pressed="false"
+            title="Switch to larger high-contrast typography for presenting on an auditorium screen"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            <span>Stage Mode</span>
+          </button>
+
+          <button
+            type="button"
+            class="btn-ink"
+            id="open-qr-btn"
+            aria-haspopup="dialog"
+            aria-controls="qr-modal"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+              <path d="M14 14h3v3h-3z"></path>
+              <path d="M19 14h2v2"></path>
+              <path d="M14 19h2v2"></path>
+              <path d="M19 19h2v2h-2z"></path>
+            </svg>
+            <span>QR &amp; Share</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- ================================================================
+           HERO: MAGAZINE COVER SPREAD
+      ================================================================= -->
+      <section class="hero container">
+        <div class="hero__meta-bar">
+          <span class="mono-label" id="issue-label">ALUMNI HOMECOMING · SPECIAL EDITION</span>
+          <span class="hero__meta-divider" aria-hidden="true"></span>
+          <span class="mono-label" id="event-meta">MAIN CAMPUS AUDITORIUM · NOVEMBER 2026</span>
+        </div>
+
+        <div class="hero__grid">
+          <div class="hero__copy">
+            <div class="alumni-pill" id="alumni-badge">Class of 2020 · Guest Speaker</div>
+
+            <h1 class="hero__headline" id="talk-title">
+              From Back-Bench Curiosity to Building at Scale
+            </h1>
+
+            <p class="hero__subtitle" id="talk-subtitle">
+              An honest, unfiltered timeline of wrong turns, late-night experiments, first breaks,
+              and what I wish someone had told me when I sat in your seats.
+            </p>
+
+            <div class="hero__byline">
+              <div class="hero__byline-text">
+                <span class="hero__byline-name" id="hero-speaker-name">Aarav Sharma</span>
+                <span class="hero__byline-role" id="hero-speaker-role">
+                  Senior Product Engineer · CloudScale Labs
+                </span>
+              </div>
+              <span class="hero__byline-college" id="hero-college-name">
+                National Institute of Technology &amp; Engineering
+              </span>
+            </div>
+
+            <p class="hero__intro" id="hero-short-intro"></p>
+
+            <div class="hero__cta-row">
+              <a href="#journey" class="btn-primary">
+                <span>Explore My Journey</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <polyline points="19 12 12 19 5 12"></polyline>
+                </svg>
+              </a>
+              <a href="#connect" class="btn-outline">Say Hello After the Talk</a>
+            </div>
+          </div>
+
+          <aside class="hero__visual">
+            <figure class="editorial-frame">
+              <div class="editorial-frame__image-wrap">
+                <img
+                  id="speaker-photo"
+                  src="assets/speaker-portrait.jpg"
+                  alt="Speaker portrait"
+                  class="editorial-frame__img"
+                />
+              </div>
+              <figcaption class="editorial-frame__caption">
+                <span class="mono-label">FIG. 01</span>
+                <span id="speaker-photo-caption">
+                  Back on campus — five years after handing in my final semester project.
+                </span>
+              </figcaption>
+            </figure>
+
+            <dl class="facts-grid" id="quick-facts" aria-label="Speaker snapshot"></dl>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           OPENING EDITORIAL LETTER + CAMPUS FEATURE PHOTO
+      ================================================================= -->
+      <section class="letter-section" id="story">
+        <div class="container">
+          <div class="editorial-rule">
+            <span class="mono-label">EDITOR'S NOTE · TO THE STUDENTS IN THE ROOM</span>
+          </div>
+
+          <div class="letter__grid">
+            <div class="letter__lead-col">
+              <blockquote class="letter__pullquote" id="letter-lead"></blockquote>
+              <div class="letter__signature">
+                <span class="letter__sig-name" id="letter-sig-name">— Aarav</span>
+                <span class="mono-label" id="letter-sig-meta">RETURNED AS GUEST SPEAKER</span>
+              </div>
+            </div>
+
+            <div class="letter__body-col" id="letter-body"></div>
+          </div>
+
+          <figure class="feature-spread reveal">
+            <div class="feature-spread__media">
+              <img
+                id="feature-image"
+                src="assets/campus-story.jpg"
+                alt="Sunlit campus desk and notebook"
+                loading="lazy"
+              />
+            </div>
+            <figcaption class="feature-spread__caption">
+              <span class="mono-label">FIG. 02 · ARCHIVE</span>
+              <span id="feature-image-caption"></span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           CENTERPIECE: MY JOURNEY TIMELINE
+      ================================================================= -->
+      <section class="journey-section" id="journey">
+        <div class="container">
+          <div class="editorial-rule">
+            <span class="mono-label">FEATURE TIMELINE · FROM COLLEGE DAYS TO CURRENT ROLE</span>
+          </div>
+
+          <div class="journey__header">
+            <div class="journey__title-block">
+              <h2 class="section-heading">My Journey, Chapter by Chapter</h2>
+              <p class="section-lead">
+                Every milestone, detour, and honest lesson between my first day on campus and
+                walking back onto this stage.
+              </p>
+            </div>
+
+            <div class="journey__controls">
+              <div
+                class="era-filters"
+                id="era-filters"
+                role="tablist"
+                aria-label="Filter journey by era"
+              ></div>
+              <button type="button" class="text-toggle-btn" id="toggle-all-lessons-btn">
+                Expand all student takeaways
+              </button>
+            </div>
+          </div>
+
+          <div class="journey__layout">
+            <!-- Sticky Editorial Chapter Index (Desktop) -->
+            <aside class="chapter-rail" aria-label="Chapter quick navigation">
+              <div class="chapter-rail__sticky">
+                <span class="mono-label chapter-rail__heading">CONTENTS</span>
+                <ol class="chapter-rail__list" id="chapter-rail-list"></ol>
+                <div class="chapter-rail__hint">
+                  <span>Presenting on stage?</span>
+                  <button type="button" class="link-inline" id="rail-stage-trigger">
+                    Turn on Stage Mode →
+                  </button>
+                </div>
+              </div>
+            </aside>
+
+            <!-- Vertical Story Spine -->
+            <div class="timeline" id="timeline-container"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           POSTSCRIPT: NOTES TO MY COLLEGE SELF
+      ================================================================= -->
+      <section class="notes-section" id="notes">
+        <div class="container">
+          <div class="editorial-rule">
+            <span class="mono-label" id="notes-eyebrow">POSTSCRIPT · MARGINALIA</span>
+          </div>
+
+          <h2 class="section-heading notes__heading" id="notes-heading">
+            Three things I'd tell my college self over chai
+          </h2>
+
+          <div class="notes-grid" id="notes-grid"></div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           CONNECT & QR SHARE HUB
+      ================================================================= -->
+      <section class="connect-section" id="connect">
+        <div class="container">
+          <div class="connect-card">
+            <div class="connect-card__intro">
+              <span class="mono-label" id="connect-eyebrow">STAY IN TOUCH</span>
+              <h2 class="connect-card__heading" id="connect-heading">
+                Let's keep the conversation going after the talk.
+              </h2>
+              <p class="connect-card__subtext" id="connect-subtext"></p>
+
+              <div class="connect-card__actions">
+                <a href="mailto:" class="btn-primary" id="connect-email-btn">
+                  <span>Write Me an Email</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                    <polyline points="7 7 17 7 17 17"></polyline>
+                  </svg>
+                </a>
+                <button type="button" class="btn-outline" id="connect-qr-btn">
+                  Show QR Code on Screen
+                </button>
+              </div>
+            </div>
+
+            <div class="connect-card__links" id="connect-links"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Editorial Colophon Footer -->
+    <footer class="colophon">
+      <div class="container colophon__inner">
+        <div class="colophon__left">
+          <span class="colophon__title" id="footer-speaker-name">Aarav Sharma</span>
+          <span class="colophon__sep" aria-hidden="true">·</span>
+          <span id="footer-event-name">Annual Alumni Fireside &amp; Tech Talk</span>
+        </div>
+        <div class="colophon__right mono-label">
+          <span>BUILT FOR THE STUDENTS OF </span>
+          <span id="footer-college-short">MY ALMA MATER</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ================================================================
+         STAGE MODE PRESENTER HUD (Hidden unless Stage Mode is active)
+    ================================================================= -->
+    <div class="stage-hud" id="stage-hud" hidden role="region" aria-label="Stage presentation controls">
+      <button type="button" class="stage-hud__btn" id="stage-prev-btn" aria-label="Previous chapter">
+        ← Prev
+      </button>
+      <div class="stage-hud__status">
+        <span class="mono-label">STAGE MODE</span>
+        <strong id="stage-current-label">Cover</strong>
+      </div>
+      <button type="button" class="stage-hud__btn" id="stage-next-btn" aria-label="Next chapter">
+        Next →
+      </button>
+      <button type="button" class="stage-hud__exit" id="stage-exit-btn" title="Exit Stage Mode (Esc)">
+        Exit
+      </button>
+    </div>
+
+    <!-- ================================================================
+         QR & SHARE MODAL (For students in the auditorium to scan)
+    ================================================================= -->
+    <div class="modal-backdrop" id="qr-modal" hidden role="dialog" aria-modal="true" aria-labelledby="qr-modal-title">
+      <div class="modal-card">
+        <div class="modal-card__header">
+          <span class="mono-label">AUDIENCE COMPANION</span>
+          <button type="button" class="modal-close" id="close-qr-btn" aria-label="Close dialog">
+            ✕
+          </button>
+        </div>
+
+        <h3 class="modal-card__title" id="qr-modal-title">Scan to open this story on your phone</h3>
+        <p class="modal-card__desc">
+          Save my journey notes, links, and contact details right from your seat.
+        </p>
+
+        <div class="qr-box" id="qr-box">
+          <img id="qr-image" alt="QR code to open this website" class="qr-box__img" />
+          <div class="qr-box__fallback" id="qr-fallback" hidden>
+            <span class="mono-label">LOCAL / OFFLINE PREVIEW</span>
+            <p>
+              Once you publish this page (e.g. on Netlify or GitHub Pages) or set
+              <code>connect.shareUrl</code> in <code>data.js</code>, a scannable QR code will appear right here.
+            </p>
+          </div>
+        </div>
+
+        <div class="share-url-row">
+          <input type="text" id="share-url-input" readonly aria-label="Shareable page URL" />
+          <button type="button" class="btn-ink" id="copy-url-btn">Copy Link</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Single-file content config loads first, then the interactive renderer -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
