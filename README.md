@@ -1,6 +1,6 @@
-# Prashant Kumar Gaurav — Alumni Speaker Showcase & Presentation
+# Prashant Kumar — Alumni Speaker Showcase & Presentation
 
-A warm editorial showcase website and interactive 15-slide presentation deck created for **Prashant Kumar Gaurav** (BFA 2026, Dev Bhoomi Uttarakhand University), Visual Designer placed at **J Town Productions**.
+A warm editorial showcase website and interactive 15-slide presentation deck created for **Prashant Kumar** (BFA 2026, Dev Bhoomi Uttarakhand University), Visual Designer placed at **J Town Productions**.
 
 Based on the talk: **“My Journey From BFA to Working as a Designer — Failure didn't stop me, it shaped me.”**
 
@@ -9,7 +9,7 @@ Based on the talk: **“My Journey From BFA to Working as a Designer — Failure
 ## 🌟 What's Included
 
 1. **[index.html](file:///c:/Lappy%20Backup/Antigravity/Prashant%20Coherence/college%20frame/index.html)** — Comprehensive Editorial Showcase:
-   - **Hero & Homecoming Cover**: Prashant Kumar Gaurav, BFA Class of 2026, Placed at J Town Productions, Dev Bhoomi Uttarakhand University.
+   - **Hero & Homecoming Cover**: Prashant Kumar, BFA Class of 2026, Placed at J Town Productions, Dev Bhoomi Uttarakhand University.
    - **About Me (Slide 2)**: Opening letter detailing walking into DBUU in 2022, graduating in 2026, and heartfelt gratitude to teachers.
    - **Why Fine Arts & Busting the Myth (Slides 3 & 4)**: Deconstructing *“There is no scope in Fine Arts”* with real industry data on skills and commercial demand.
    - **Chronological Journey Timeline (Slides 5–7, 9, 11)**:

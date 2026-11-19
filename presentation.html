@@ -6,14 +6,14 @@
     <title>Presentation Deck — My Journey From BFA to Working as a Designer</title>
     <meta
       name="description"
-      content="15-Slide Presentation Deck delivered at Dev Bhoomi Uttarakhand University by Prashant Kumar Gaurav."
+      content="15-Slide Presentation Deck delivered at Dev Bhoomi Uttarakhand University by Prashant Kumar."
     />
 
-    <!-- Warm Editorial Typography -->
+    <!-- Modern Blue Agency Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -32,6 +32,15 @@
         </a>
 
         <div class="masthead__actions">
+          <button type="button" class="nav-pdf-btn" id="open-portfolio-pdf-btn" style="height: 32px;" title="Open Graphic Design Portfolio PDF">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+            <span>Portfolio PDF</span>
+          </button>
           <a href="index.html" class="btn-ghost masthead__action-btn">
             <span>← Story Showcase</span>
           </a>
@@ -71,17 +80,34 @@
             <span class="mono-label">PRASHANT KUMAR · 2026</span>
             <span class="mono-label">@coherence_visual_designer</span>
           </div>
-          <div class="slide-frame__body" style="justify-content: center;">
-            <span class="alumni-pill" style="align-self: flex-start; margin-bottom: 1rem;">
-              Alumni Talk · DBUU
-            </span>
-            <h2 class="hero__headline" style="font-size: clamp(2.4rem, 4.5vw, 3.8rem); margin-bottom: 1rem;">
-              My Journey<br />From BFA to<br />Working as a<br />Designer
-            </h2>
+          <div class="slide-frame__body" style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 2rem;">
+            <div>
+              <span class="alumni-pill" style="align-self: flex-start; margin-bottom: 1rem;">
+                Alumni Talk · DBUU
+              </span>
+              <h2 class="hero__headline" style="font-size: clamp(2.4rem, 4.5vw, 3.8rem); margin-bottom: 1rem;">
+                My Journey<br />From BFA to<br />Working as a<br />Designer
+              </h2>
+              <div class="pdf-gradient-bar" style="margin-bottom: 0;"></div>
+            </div>
+            <div style="flex-shrink: 0; padding-right: 1.5rem;">
+              <svg class="pdf-asterisk" style="width: 140px; height: 140px;" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+                <rect x="42" y="5" width="16" height="90" rx="8" fill="url(#deck-star-grad)"/>
+                <rect x="5" y="42" width="90" height="16" rx="8" fill="url(#deck-star-grad)"/>
+                <rect x="42" y="5" width="16" height="90" rx="8" transform="rotate(45 50 50)" fill="url(#deck-star-grad)"/>
+                <rect x="42" y="5" width="16" height="90" rx="8" transform="rotate(-45 50 50)" fill="url(#deck-star-grad)"/>
+                <defs>
+                  <linearGradient id="deck-star-grad" x1="0" y1="0" x2="100" y2="100">
+                    <stop stop-color="#93C5FD"/>
+                    <stop offset="1" stop-color="#2563EB"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
           </div>
           <div class="slide-frame__footer">
             <span class="mono-label">DEV BHOOMI UTTARAKHAND UNIVERSITY</span>
-            <span class="mono-label">PRESENTED BY PRASHANT KUMAR GAURAV</span>
+            <span class="mono-label">PRESENTED BY PRASHANT KUMAR</span>
           </div>
         </article>
 
@@ -162,7 +188,8 @@
             <span class="mono-label">REALITY CHECK</span>
           </div>
           <div class="slide-frame__body">
-            <h2 class="hero__headline" style="font-size: clamp(2.2rem, 3.8vw, 3.2rem); margin-bottom: 0.5rem; color: var(--accent-dark);">
+            <div class="pdf-gradient-bar" style="margin-top: 0; margin-bottom: 1.5rem;"></div>
+            <h2 class="hero__headline" style="font-size: clamp(2.2rem, 3.8vw, 3.2rem); margin-bottom: 0.5rem; color: #ffffff;">
               “There is no scope in Fine Arts.”
             </h2>
             <p class="mono-label" style="margin-bottom: 2rem;">
@@ -170,8 +197,8 @@
             </p>
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
               <div class="myth-card" style="padding: 1.75rem;">
-                <span class="mono-label" style="color: var(--accent);">INSIGHT 01</span>
-                <h3 style="font-family: var(--font-serif); font-size: 1.45rem; margin: 0.5rem 0;">
+                <span class="mono-label" style="color: var(--accent-blue-bright);">INSIGHT 01</span>
+                <h3 style="font-family: var(--font-sans); font-size: 1.45rem; margin: 0.5rem 0;">
                   Scope depends on skill, not just a degree.
                 </h3>
                 <p style="color: var(--ink-secondary); margin: 0;">
@@ -179,8 +206,8 @@
                 </p>
               </div>
               <div class="myth-card" style="padding: 1.75rem;">
-                <span class="mono-label" style="color: var(--accent);">INSIGHT 02</span>
-                <h3 style="font-family: var(--font-serif); font-size: 1.45rem; margin: 0.5rem 0;">
+                <span class="mono-label" style="color: var(--accent-blue-bright);">INSIGHT 02</span>
+                <h3 style="font-family: var(--font-sans); font-size: 1.45rem; margin: 0.5rem 0;">
                   Design &amp; branding are in demand everywhere.
                 </h3>
                 <p style="color: var(--ink-secondary); margin: 0;">
@@ -190,7 +217,7 @@
             </div>
           </div>
           <div class="slide-frame__footer">
-            <span class="mono-label">PRASHANT KUMAR GAURAV</span>
+            <span class="mono-label">PRASHANT KUMAR</span>
             <span class="mono-label">MARKET DEMAND</span>
           </div>
         </article>
@@ -202,27 +229,27 @@
             <span class="mono-label">YEAR 01 · 2022</span>
           </div>
           <div class="slide-frame__body">
-            <span class="mono-label" style="color: var(--accent);">TIMELINE · 01</span>
+            <span class="mono-label" style="color: var(--accent-blue-bright);">TIMELINE · 01</span>
             <h2 class="hero__headline" style="font-size: 2.6rem; margin-bottom: 2rem;">
               Year 1: Learning the Basics
             </h2>
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
               <div class="lesson-box">
-                <span class="mono-label" style="color: var(--accent);">01 · ART BASICS</span>
+                <span class="mono-label" style="color: var(--accent-blue-bright);">01 · ART BASICS</span>
                 <h3 class="lesson-box__title">Foundations</h3>
                 <p class="lesson-box__body">
                   Mastering drawing, color theory, human anatomy, proportion, and paper composition.
                 </p>
               </div>
               <div class="lesson-box">
-                <span class="mono-label" style="color: var(--accent);">02 · SOFTWARE</span>
+                <span class="mono-label" style="color: var(--accent-blue-bright);">02 · SOFTWARE</span>
                 <h3 class="lesson-box__title">Digital Transition</h3>
                 <p class="lesson-box__body">
                   Exploring Adobe Photoshop, Illustrator, and transferring analog art into digital vector and raster workflows.
                 </p>
               </div>
-              <div class="lesson-box" style="border-left: 3px solid var(--accent);">
-                <span class="mono-label" style="color: var(--accent-dark);">CORE LESSON</span>
+              <div class="lesson-box" style="border-left: 3px solid var(--accent-blue-bright);">
+                <span class="mono-label" style="color: var(--accent-blue-bright);">CORE LESSON</span>
                 <h3 class="lesson-box__title">Build Fundamentals</h3>
                 <p class="lesson-box__body">
                   Build strong fundamentals before chasing trendy software effects.
@@ -243,14 +270,14 @@
             <span class="mono-label">YEAR 02 · 2023</span>
           </div>
           <div class="slide-frame__body">
-            <span class="mono-label" style="color: var(--accent);">TIMELINE · 02</span>
+            <span class="mono-label" style="color: var(--accent-blue-bright);">TIMELINE · 02</span>
             <h2 class="hero__headline" style="font-size: 2.6rem; margin-bottom: 1.5rem;">
               Year 2: First Freelance Steps
             </h2>
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 1.5rem;">
               <div class="myth-card">
                 <span class="mono-label">EARLY COMMISSIONS</span>
-                <h3 style="font-family: var(--font-serif); font-size: 1.35rem; margin: 0.4rem 0;">
+                <h3 style="font-family: var(--font-sans); font-size: 1.35rem; margin: 0.4rem 0;">
                   Early Projects
                 </h3>
                 <p style="color: var(--ink-secondary); margin: 0;">
@@ -259,7 +286,7 @@
               </div>
               <div class="myth-card">
                 <span class="mono-label">NETWORK ACQUISITION</span>
-                <h3 style="font-family: var(--font-serif); font-size: 1.35rem; margin: 0.4rem 0;">
+                <h3 style="font-family: var(--font-sans); font-size: 1.35rem; margin: 0.4rem 0;">
                   First Clients
                 </h3>
                 <p style="color: var(--ink-secondary); margin: 0;">
@@ -285,29 +312,29 @@
             <span class="mono-label">THE REALITY CHECK</span>
           </div>
           <div class="slide-frame__body">
-            <span class="alumni-pill" style="align-self: flex-start; margin-bottom: 1rem; background: rgba(184, 74, 39, 0.15);">
+            <span class="alumni-pill" style="align-self: flex-start; margin-bottom: 1rem; background: rgba(59, 130, 246, 0.25);">
               Critical Turning Point
             </span>
-            <h2 class="hero__headline" style="font-size: clamp(2.4rem, 4vw, 3.4rem); margin-bottom: 2rem; color: var(--accent-dark);">
+            <h2 class="hero__headline" style="font-size: clamp(2.4rem, 4vw, 3.4rem); margin-bottom: 2rem; color: var(--accent-blue-bright);">
               My First Internship: I Failed
             </h2>
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
               <div class="lesson-box">
-                <span class="mono-label" style="color: var(--accent);">THE SETBACK</span>
+                <span class="mono-label" style="color: var(--accent-blue-bright);">THE SETBACK</span>
                 <h3 class="lesson-box__title">Initial Role</h3>
                 <p class="lesson-box__body">
                   The initial studio internship did not work out as planned and ended prematurely.
                 </p>
               </div>
               <div class="lesson-box">
-                <span class="mono-label" style="color: var(--accent);">THE REALITY CHECK</span>
+                <span class="mono-label" style="color: var(--accent-blue-bright);">THE REALITY CHECK</span>
                 <h3 class="lesson-box__title">Skill Gaps</h3>
                 <p class="lesson-box__body">
                   Lacked professional agency readiness, core client communication, and commercial production speed.
                 </p>
               </div>
-              <div class="lesson-box" style="border-left: 3px solid var(--accent);">
-                <span class="mono-label" style="color: var(--accent-dark);">THE CORE LESSON</span>
+              <div class="lesson-box" style="border-left: 3px solid var(--accent-blue-bright);">
+                <span class="mono-label" style="color: var(--accent-blue-bright);">THE CORE LESSON</span>
                 <h3 class="lesson-box__title">Critical Feedback</h3>
                 <p class="lesson-box__body">
                   Failure is critical diagnostic feedback, not the end of the road.
@@ -317,7 +344,7 @@
           </div>
           <div class="slide-frame__footer">
             <span class="mono-label">RESILIENCE</span>
-            <span class="mono-label">PRASHANT KUMAR GAURAV</span>
+            <span class="mono-label">PRASHANT KUMAR</span>
           </div>
         </article>
 
@@ -328,7 +355,7 @@
             <span class="mono-label">BRAND IDENTITY</span>
           </div>
           <div class="slide-frame__body">
-            <span class="mono-label" style="color: var(--accent);">DESIGN METHODOLOGY</span>
+            <span class="mono-label" style="color: var(--accent-blue-bright);">DESIGN METHODOLOGY</span>
             <h2 class="hero__headline" style="font-size: 2.4rem; margin-bottom: 1.5rem;">
               Idea Behind the Logo (Night Club)
             </h2>
@@ -372,32 +399,32 @@
             <span class="mono-label">DELHI NCR CHAPTER</span>
           </div>
           <div class="slide-frame__body">
-            <span class="mono-label" style="color: var(--accent);">AGENCY EXPERIENCE</span>
+            <span class="mono-label" style="color: var(--accent-blue-bright);">AGENCY EXPERIENCE</span>
             <h2 class="hero__headline" style="font-size: 2.6rem; margin-bottom: 2rem;">
               Bouncing Back in Delhi
             </h2>
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
               <div class="myth-card">
-                <span class="mono-label" style="color: var(--accent);">01</span>
-                <h3 style="font-family: var(--font-serif); font-size: 1.35rem; margin: 0.4rem 0;">
+                <span class="mono-label" style="color: var(--accent-blue-bright);">01</span>
+                <h3 style="font-family: var(--font-sans); font-size: 1.35rem; margin: 0.4rem 0;">
                   Applied again and hired as a T-shirt graphic designer.
                 </h3>
               </div>
               <div class="myth-card">
-                <span class="mono-label" style="color: var(--accent);">02</span>
-                <h3 style="font-family: var(--font-serif); font-size: 1.35rem; margin: 0.4rem 0;">
+                <span class="mono-label" style="color: var(--accent-blue-bright);">02</span>
+                <h3 style="font-family: var(--font-sans); font-size: 1.35rem; margin: 0.4rem 0;">
                   Learned real agency deadlines and team dynamics.
                 </h3>
               </div>
               <div class="myth-card">
-                <span class="mono-label" style="color: var(--accent);">03</span>
-                <h3 style="font-family: var(--font-serif); font-size: 1.35rem; margin: 0.4rem 0;">
+                <span class="mono-label" style="color: var(--accent-blue-bright);">03</span>
+                <h3 style="font-family: var(--font-sans); font-size: 1.35rem; margin: 0.4rem 0;">
                   Mastered print-ready specs, color separations, and client expectations.
                 </h3>
               </div>
               <div class="myth-card">
-                <span class="mono-label" style="color: var(--accent);">04</span>
-                <h3 style="font-family: var(--font-serif); font-size: 1.35rem; margin: 0.4rem 0;">
+                <span class="mono-label" style="color: var(--accent-blue-bright);">04</span>
+                <h3 style="font-family: var(--font-sans); font-size: 1.35rem; margin: 0.4rem 0;">
                   A second chance in a new city restores confidence.
                 </h3>
               </div>
@@ -451,27 +478,27 @@
             <span class="mono-label">YEARS 03 — 04 · 2024 — 2026</span>
           </div>
           <div class="slide-frame__body">
-            <span class="mono-label" style="color: var(--accent);">TIMELINE</span>
+            <span class="mono-label" style="color: var(--accent-blue-bright);">TIMELINE</span>
             <h2 class="hero__headline" style="font-size: 2.6rem; margin-bottom: 2rem;">
               Years 3–4: Growth
             </h2>
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
               <div class="lesson-box">
-                <span class="mono-label" style="color: var(--accent);">PORTFOLIO</span>
+                <span class="mono-label" style="color: var(--accent-blue-bright);">PORTFOLIO</span>
                 <h3 class="lesson-box__title">Real Client Work</h3>
                 <p class="lesson-box__body">
                   Built purely from real client work, actual commercial garments, and live branding briefs.
                 </p>
               </div>
               <div class="lesson-box">
-                <span class="mono-label" style="color: var(--accent);">BUSINESS</span>
+                <span class="mono-label" style="color: var(--accent-blue-bright);">BUSINESS</span>
                 <h3 class="lesson-box__title">Agency Standards</h3>
                 <p class="lesson-box__body">
                   Handled strict production deadlines, client feedback rounds, and freelance pricing.
                 </p>
               </div>
-              <div class="lesson-box" style="border-left: 3px solid var(--accent);">
-                <span class="mono-label" style="color: var(--accent-dark);">CORE LESSON</span>
+              <div class="lesson-box" style="border-left: 3px solid var(--accent-blue-bright);">
+                <span class="mono-label" style="color: var(--accent-blue-bright);">CORE LESSON</span>
                 <h3 class="lesson-box__title">Consistent Practice</h3>
                 <p class="lesson-box__body">
                   Consistent practice beats waiting for perfection every single time.
@@ -494,7 +521,7 @@
           <div class="slide-frame__body">
             <div style="display: grid; grid-template-columns: 1fr 240px; gap: 2rem; align-items: center;">
               <div>
-                <span class="mono-label" style="color: var(--accent);">THE GOAL ACHIEVED</span>
+                <span class="mono-label" style="color: var(--accent-blue-bright);">THE GOAL ACHIEVED</span>
                 <h2 class="hero__headline" style="font-size: 2.6rem; margin: 0.4rem 0 1rem;">
                   Landing the Job
                 </h2>
@@ -554,7 +581,7 @@
           </div>
           <div class="slide-frame__footer">
             <span class="mono-label">PRACTICAL ADVICE</span>
-            <span class="mono-label">PRASHANT KUMAR GAURAV</span>
+            <span class="mono-label">PRASHANT KUMAR</span>
           </div>
         </article>
 
@@ -570,25 +597,25 @@
             </h2>
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;">
               <div class="myth-card" style="padding: 1.35rem;">
-                <span class="mono-label" style="color: var(--accent);">RULE 01</span>
+                <span class="mono-label" style="color: var(--accent-blue-bright);">RULE 01</span>
                 <p style="margin: 0.4rem 0 0; font-size: 1.05rem; font-weight: 500;">
                   Choose a course you enjoy, then outwork everyone.
                 </p>
               </div>
               <div class="myth-card" style="padding: 1.35rem;">
-                <span class="mono-label" style="color: var(--accent);">RULE 02</span>
+                <span class="mono-label" style="color: var(--accent-blue-bright);">RULE 02</span>
                 <p style="margin: 0.4rem 0 0; font-size: 1.05rem; font-weight: 500;">
                   Post work online and share it publicly.
                 </p>
               </div>
               <div class="myth-card" style="padding: 1.35rem;">
-                <span class="mono-label" style="color: var(--accent);">RULE 03</span>
+                <span class="mono-label" style="color: var(--accent-blue-bright);">RULE 03</span>
                 <p style="margin: 0.4rem 0 0; font-size: 1.05rem; font-weight: 500;">
                   Say yes to small projects; they lead to bigger ones.
                 </p>
               </div>
               <div class="myth-card" style="padding: 1.35rem;">
-                <span class="mono-label" style="color: var(--accent);">RULE 04</span>
+                <span class="mono-label" style="color: var(--accent-blue-bright);">RULE 04</span>
                 <p style="margin: 0.4rem 0 0; font-size: 1.05rem; font-weight: 500;">
                   Be strictly patient. True results take time.
                 </p>
@@ -607,11 +634,23 @@
             <span class="mono-label">PRASHANT KUMAR</span>
             <span class="mono-label">@coherence_visual_designer</span>
           </div>
-          <div class="slide-frame__body" style="text-align: center; align-items: center; justify-content: center;">
-            <h2 class="hero__headline" style="font-size: clamp(3rem, 6vw, 4.8rem); margin-bottom: 1rem;">
+          <div class="slide-frame__body" style="text-align: center; align-items: center; justify-content: center; position: relative;">
+            <svg class="pdf-asterisk" style="width: 110px; height: 110px; position: absolute; right: 2rem; top: 0;" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+              <rect x="42" y="5" width="16" height="90" rx="8" fill="url(#thankyou-star-grad)"/>
+              <rect x="5" y="42" width="90" height="16" rx="8" fill="url(#thankyou-star-grad)"/>
+              <rect x="42" y="5" width="16" height="90" rx="8" transform="rotate(45 50 50)" fill="url(#thankyou-star-grad)"/>
+              <rect x="42" y="5" width="16" height="90" rx="8" transform="rotate(-45 50 50)" fill="url(#thankyou-star-grad)"/>
+              <defs>
+                <linearGradient id="thankyou-star-grad" x1="0" y1="0" x2="100" y2="100">
+                  <stop stop-color="#93C5FD"/>
+                  <stop offset="1" stop-color="#2563EB"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <h2 class="hero__headline" style="font-size: clamp(3rem, 6vw, 4.8rem); margin-bottom: 0.8rem;">
               Thank You!
             </h2>
-            <blockquote style="font-family: var(--font-serif); font-size: clamp(1.6rem, 3vw, 2.4rem); color: var(--accent-dark); max-width: 24ch; margin: 0 auto 2rem;">
+            <blockquote style="font-family: var(--font-sans); font-weight: 700; font-size: clamp(1.6rem, 3vw, 2.4rem); color: var(--accent-blue-bright); max-width: 24ch; margin: 0 auto 2rem;">
               “Failure didn't stop me, it shaped me.”
             </blockquote>
             <div style="display: flex; gap: 1rem; justify-content: center;">
@@ -625,7 +664,7 @@
           </div>
           <div class="slide-frame__footer">
             <span class="mono-label">DEV BHOOMI UTTARAKHAND UNIVERSITY</span>
-            <span class="mono-label">PRESENTED BY PRASHANT KUMAR GAURAV</span>
+            <span class="mono-label">PRESENTED BY PRASHANT KUMAR</span>
           </div>
         </article>
       </div>
@@ -637,7 +676,7 @@
     <footer class="colophon">
       <div class="container colophon__inner">
         <div class="colophon__left">
-          <span class="colophon__title">Prashant Kumar Gaurav</span>
+          <span class="colophon__title">PRASHANT KUMAR</span>
           <span class="colophon__sep" aria-hidden="true">·</span>
           <span>Dev Bhoomi Uttarakhand University (DBUU)</span>
         </div>
@@ -646,6 +685,61 @@
         </div>
       </div>
     </footer>
+
+    <!-- FULLSCREEN PORTFOLIO PDF VIEWER WITH TOP-RIGHT CROSS BAR -->
+    <div
+      class="pdf-modal-backdrop"
+      id="portfolio-pdf-modal"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-label="Graphic Design Portfolio PDF Viewer"
+    >
+      <div class="pdf-modal-container">
+        <div class="pdf-modal-topbar">
+          <div class="pdf-modal-title-wrap">
+            <span class="mono-label">PORTFOLIO VIEWER</span>
+            <span class="pdf-modal-filename">Graphic Design Portfolio (prashant).pdf</span>
+          </div>
+          <div class="pdf-modal-actions">
+            <a
+              href="Graphic%20Design%20Portfolio%20(prashant).pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="pdf-modal-action-btn"
+              title="Open PDF in new browser tab"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              <span>Open in New Tab</span>
+            </a>
+            <button
+              type="button"
+              class="pdf-modal-close-btn"
+              id="close-portfolio-pdf-btn"
+              aria-label="Close PDF viewer (Esc)"
+              title="Close (Esc)"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="pdf-modal-content">
+          <iframe
+            id="portfolio-pdf-iframe"
+            data-src="Graphic%20Design%20Portfolio%20(prashant).pdf#view=FitH"
+            title="Graphic Design Portfolio PDF"
+            class="pdf-viewer-iframe"
+          ></iframe>
+        </div>
+      </div>
+    </div>
 
     <script>
       (function () {
@@ -657,6 +751,33 @@
         const nextBtn = document.getElementById("deck-next-btn");
         const thumbsNav = document.getElementById("deck-thumbs-nav");
         const fsBtn = document.getElementById("deck-fullscreen-btn");
+
+        // Portfolio PDF Modal
+        const pdfModal = document.getElementById("portfolio-pdf-modal");
+        const openPdfBtn = document.getElementById("open-portfolio-pdf-btn");
+        const closePdfBtn = document.getElementById("close-portfolio-pdf-btn");
+        const pdfIframe = document.getElementById("portfolio-pdf-iframe");
+
+        if (pdfModal && openPdfBtn) {
+          openPdfBtn.addEventListener("click", () => {
+            if (pdfIframe && !pdfIframe.src && pdfIframe.dataset.src) {
+              pdfIframe.src = pdfIframe.dataset.src;
+            }
+            pdfModal.hidden = false;
+            document.body.style.overflow = "hidden";
+            closePdfBtn?.focus();
+          });
+          closePdfBtn?.addEventListener("click", () => {
+            pdfModal.hidden = true;
+            document.body.style.overflow = "";
+          });
+          pdfModal.addEventListener("click", (e) => {
+            if (e.target === pdfModal) {
+              pdfModal.hidden = true;
+              document.body.style.overflow = "";
+            }
+          });
+        }
 
         const slideTitles = [
           "Cover: My Journey",

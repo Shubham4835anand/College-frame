@@ -678,6 +678,43 @@
   }
 
   /* ==========================================================================
+     7. GRAPHIC DESIGN PORTFOLIO PDF VIEWER MODAL
+     ========================================================================== */
+  function setupPortfolioPdfModal() {
+    const modal = $("portfolio-pdf-modal");
+    const openBtn = $("open-portfolio-pdf-btn");
+    const closeBtn = $("close-portfolio-pdf-btn");
+    const iframe = $("portfolio-pdf-iframe");
+
+    if (!modal || !openBtn) return;
+
+    function openPdf() {
+      if (iframe && !iframe.src && iframe.dataset.src) {
+        iframe.src = iframe.dataset.src;
+      }
+      modal.hidden = false;
+      document.body.style.overflow = "hidden";
+      closeBtn?.focus();
+    }
+
+    function closePdf() {
+      modal.hidden = true;
+      document.body.style.overflow = "";
+    }
+
+    openBtn.addEventListener("click", openPdf);
+    closeBtn?.addEventListener("click", closePdf);
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closePdf();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.hidden) closePdf();
+    });
+  }
+
+  /* ==========================================================================
      INIT
      ========================================================================== */
   hydrateContent();
@@ -687,4 +724,5 @@
   setupExpandAllToggle();
   setupStageMode();
   setupQrModal();
+  setupPortfolioPdfModal();
 })();

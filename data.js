@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  SPEAKER SHOWCASE — PRASHANT KUMAR GAURAV (BFA 2026)
+ *  SPEAKER SHOWCASE — PRASHANT KUMAR (BFA 2026)
  * ============================================================================
  *  Based on: "My Journey From BFA to Working as a Designer"
  *  Alumni Talk at Dev Bhoomi Uttarakhand University (DBUU)
@@ -9,7 +9,7 @@
 
 window.SPEAKER_DATA = {
   meta: {
-    siteTitle: "Prashant Kumar Gaurav — From BFA to Working as a Designer",
+    siteTitle: "Prashant Kumar — From BFA to Working as a Designer",
     issueLabel: "ALUMNI SPEAKER · DEV BHOOMI UTTARAKHAND UNIVERSITY",
     issueNumber: "BFA '26",
     dateStamp: "BATCH 2022 — 2026",
@@ -28,7 +28,7 @@ window.SPEAKER_DATA = {
   },
 
   speaker: {
-    name: "Prashant Kumar Gaurav",
+    name: "Prashant Kumar",
     shortName: "Prashant Kumar",
     firstName: "Prashant",
     role: "Visual & Graphic Designer",
@@ -38,7 +38,7 @@ window.SPEAKER_DATA = {
     location: "Dehradun / Delhi NCR, India",
     handle: "@coherence_visual_designer",
     photo: "assets/prashant-portrait.png",
-    photoCaption: "Prashant Kumar Gaurav — BFA graduate & visual designer.",
+    photoCaption: "Prashant Kumar — BFA graduate & visual designer.",
     placementPoster: "assets/prashant-placement-poster.png",
     placementCaption: "Official DBUU campus placement announcement: Hired at J Town Productions in final semester.",
     shortIntro:
@@ -395,7 +395,7 @@ window.SPEAKER_DATA = {
     heading: "Let's talk design, portfolios, and junior advice.",
     subtext:
       "Are you a DBUU junior working on your portfolio, curious about graphic design placements, or want feedback on your artwork? Reach out directly on Instagram or LinkedIn!",
-    email: "prashantkumar.gaurav@example.com",
+    email: "prashantkumar@example.com",
     shareUrl: "",
     customQrImage: "",
     links: [
@@ -413,14 +413,14 @@ window.SPEAKER_DATA = {
       },
       {
         label: "LinkedIn",
-        handle: "Prashant Kumar Gaurav",
+        handle: "Prashant Kumar",
         url: "https://linkedin.com",
         note: "Professional networking & agency collaboration",
       },
       {
         label: "Direct Email",
-        handle: "prashantkumar.gaurav@example.com",
-        url: "mailto:prashantkumar.gaurav@example.com",
+        handle: "prashantkumar@example.com",
+        url: "mailto:prashantkumar@example.com",
         note: "Portfolio reviews & design mentorship for juniors",
       },
     ],
