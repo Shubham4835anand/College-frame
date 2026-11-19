@@ -17,9 +17,6 @@
   // State
   let activeEra = "All";
   let allLessonsExpanded = false;
-  let stageMode = false;
-  let stageStops = [];
-  let stageIndex = 0;
   let chapterObserver = null;
 
   // Helpers
@@ -316,7 +313,7 @@
     // Timeline cards
     timelineEl.innerHTML = chapters
       .map((ch, idx) => {
-        const isOpen = allLessonsExpanded || stageMode || idx === 0;
+        const isOpen = allLessonsExpanded || idx === 0;
         const tagsHtml = (ch.tags || [])
           .map((t) => `<span class="chapter-tag">${escapeHtml(t)}</span>`)
           .join("");
@@ -410,7 +407,6 @@
 
     setupRevealObserver();
     setupChapterScrollSpy();
-    buildStageStops();
   }
 
   /* ==========================================================================
