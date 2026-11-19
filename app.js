@@ -499,194 +499,7 @@
   }
 
   /* ==========================================================================
-     5. STAGE MODE
-     ========================================================================== */
-  function buildStageStops() {
-    stageStops = [
-      { id: "top", label: "Cover" },
-      { id: "story", label: "About Me" },
-      { id: "myth", label: "Why Fine Arts" },
-      ...Array.from(document.querySelectorAll(".chapter-card")).map((card) => {
-        const ch = data.timeline.find((item) => item.id === card.id);
-        return {
-          id: card.id,
-          label: ch ? `Chapter ${ch.chapterNumber}` : card.id,
-        };
-      }),
-      { id: "work", label: "Work & T-Shirts" },
-      { id: "placement", label: "Placement" },
-      { id: "lessons", label: "6 Lessons" },
-      { id: "notes", label: "Guiding Rules" },
-      { id: "connect", label: "Connect & Q&A" },
-    ];
-    updateStageHud();
-  }
-
-  function setStageMode(enabled) {
-    stageMode = enabled;
-    document.body.classList.toggle("stage-mode", enabled);
-
-    const btn = $("stage-mode-btn");
-    if (btn) btn.setAttribute("aria-pressed", String(enabled));
-
-    const hud = $("stage-hud");
-    if (hud) hud.hidden = !enabled;
-
-    if (enabled) {
-      document.querySelectorAll(".lesson-drawer").forEach((drawer) => {
-        drawer.classList.add("is-open");
-        const toggle = drawer.querySelector(".lesson-drawer__toggle");
-        if (toggle) toggle.setAttribute("aria-expanded", "true");
-      });
-      buildStageStops();
-    }
-  }
-
-  function goToStageStop(index) {
-    if (!stageStops.length) return;
-    stageIndex = Math.max(0, Math.min(stageStops.length - 1, index));
-    const stop = stageStops[stageIndex];
-    const target = document.getElementById(stop.id);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    updateStageHud();
-  }
-
-  function updateStageHud() {
-    const labelEl = $("stage-current-label");
-    const prevBtn = $("stage-prev-btn");
-    const nextBtn = $("stage-next-btn");
-    if (!stageStops.length) return;
-
-    const current = stageStops[stageIndex] || stageStops[0];
-    if (labelEl) {
-      labelEl.textContent = `${current.label} (${stageIndex + 1}/${stageStops.length})`;
-    }
-    if (prevBtn) prevBtn.disabled = stageIndex <= 0;
-    if (nextBtn) nextBtn.disabled = stageIndex >= stageStops.length - 1;
-  }
-
-  function setupStageMode() {
-    const toggleBtn = $("stage-mode-btn");
-    const exitBtn = $("stage-exit-btn");
-    const prevBtn = $("stage-prev-btn");
-    const nextBtn = $("stage-next-btn");
-
-    toggleBtn?.addEventListener("click", () => setStageMode(!stageMode));
-    exitBtn?.addEventListener("click", () => setStageMode(false));
-    prevBtn?.addEventListener("click", () => goToStageStop(stageIndex - 1));
-    nextBtn?.addEventListener("click", () => goToStageStop(stageIndex + 1));
-
-    window.addEventListener("keydown", (e) => {
-      if (!stageMode) return;
-      if (e.key === "Escape") {
-        setStageMode(false);
-      } else if (e.key === "ArrowRight" || e.key === "PageDown") {
-        e.preventDefault();
-        goToStageStop(stageIndex + 1);
-      } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
-        e.preventDefault();
-        goToStageStop(stageIndex - 1);
-      }
-    });
-  }
-
-  /* ==========================================================================
-     6. AUDIENCE QR & SHARE MODAL
-     ========================================================================== */
-  function setupQrModal() {
-    const modal = $("qr-modal");
-    const openBtn = $("open-qr-btn");
-    const mobileQrBtn = $("mobile-open-qr-btn");
-    const connectQrBtn = $("connect-qr-btn");
-    const closeBtn = $("close-qr-btn");
-    const qrImg = $("qr-image");
-    const qrFallback = $("qr-fallback");
-    const urlInput = $("share-url-input");
-    const copyBtn = $("copy-url-btn");
-
-    if (!modal) return;
-
-    function resolveShareUrl() {
-      const configured = (data.connect && data.connect.shareUrl || "").trim();
-      if (configured) return configured;
-      return window.location.href;
-    }
-
-    function openModal() {
-      const drawer = $("mobile-nav-drawer");
-      if (drawer && !drawer.hidden) {
-        drawer.hidden = true;
-        $("hamburger-btn")?.setAttribute("aria-expanded", "false");
-      }
-
-      const url = resolveShareUrl();
-      if (urlInput) urlInput.value = url;
-
-      const customQr = (data.connect && data.connect.customQrImage || "").trim();
-      const isLocalFile = url.startsWith("file://");
-
-      if (customQr) {
-        qrImg.src = customQr;
-        qrImg.hidden = false;
-        qrFallback.hidden = true;
-      } else if (isLocalFile) {
-        qrImg.hidden = true;
-        qrFallback.hidden = false;
-      } else {
-        qrImg.hidden = false;
-        qrFallback.hidden = true;
-        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=6&color=1c1917&bgcolor=ffffff&data=${encodeURIComponent(
-          url
-        )}`;
-        qrImg.onerror = () => {
-          qrImg.hidden = true;
-          qrFallback.hidden = false;
-        };
-      }
-
-      modal.hidden = false;
-      document.body.style.overflow = "hidden";
-      closeBtn?.focus();
-    }
-
-    function closeModal() {
-      modal.hidden = true;
-      document.body.style.overflow = "";
-    }
-
-    openBtn?.addEventListener("click", openModal);
-    mobileQrBtn?.addEventListener("click", openModal);
-    connectQrBtn?.addEventListener("click", openModal);
-    closeBtn?.addEventListener("click", closeModal);
-
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) closeModal();
-    });
-
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !modal.hidden) closeModal();
-    });
-
-    copyBtn?.addEventListener("click", async () => {
-      const text = urlInput?.value || "";
-      try {
-        await navigator.clipboard.writeText(text);
-        copyBtn.textContent = "Copied!";
-      } catch {
-        urlInput?.select();
-        document.execCommand("copy");
-        copyBtn.textContent = "Copied!";
-      }
-      setTimeout(() => {
-        copyBtn.textContent = "Copy Link";
-      }, 1800);
-    });
-  }
-
-  /* ==========================================================================
-     7. GRAPHIC DESIGN PORTFOLIO PDF VIEWER (LIVE CANVAS VIA PDF.JS)
+     5. GRAPHIC DESIGN PORTFOLIO PDF VIEWER (CONTINUOUS VERTICAL SCROLL VIA PDF.JS)
      ========================================================================== */
   function setupPortfolioPdfModal() {
     const modal = $("portfolio-pdf-modal");
@@ -694,7 +507,7 @@
     const mobileOpenBtn = $("mobile-open-portfolio-pdf-btn");
     const closeBtn = $("close-portfolio-pdf-btn");
     const viewport = $("pdf-canvas-viewport");
-    const canvas = $("pdf-render-canvas");
+    const scrollTrack = $("pdf-scroll-track");
     const loadingState = $("pdf-loading-state");
     const progressBar = $("pdf-progress-bar");
     const loadingText = $("pdf-loading-text");
@@ -710,12 +523,12 @@
     if (!modal) return;
 
     let pdfDoc = null;
-    let pageNum = 1;
-    let pageRendering = false;
-    let pageNumPending = null;
-    let scale = 1.0;
-    let autoFit = true;
-    let touchStartX = 0;
+    let currentPage = 1;
+    let zoomLevelIndex = 2; // Default 1040px
+    const zoomWidths = [680, 840, 1040, 1240, 1480];
+    const renderedPages = new Set();
+    const renderingPages = new Set();
+    let isDocBuilt = false;
 
     // Configure PDF.js worker
     if (window.pdfjsLib) {
@@ -732,7 +545,7 @@
 
       if (loadingState) loadingState.hidden = false;
       if (loadingText) loadingText.textContent = "Loading Graphic Design Portfolio...";
-      if (progressBar) progressBar.style.width = "10%";
+      if (progressBar) progressBar.style.width = "15%";
 
       try {
         const loadingTask = window.pdfjsLib.getDocument({
@@ -754,8 +567,12 @@
         if (totalPagesEl) totalPagesEl.textContent = pdfDoc.numPages;
         if (loadingState) loadingState.hidden = true;
 
+        buildScrollablePages(pdfDoc.numPages);
         buildThumbnails(pdfDoc.numPages);
-        renderPage(pageNum);
+
+        // Render page 1 and 2 immediately
+        renderPage(1);
+        if (pdfDoc.numPages >= 2) renderPage(2);
       } catch (err) {
         console.error("PDF load error:", err);
         if (loadingText) {
@@ -767,77 +584,154 @@
       }
     }
 
-    function calculateFitScale(page) {
-      if (!viewport) return 1.0;
-      const unscaledViewport = page.getViewport({ scale: 1.0 });
-      const containerWidth = Math.max(300, viewport.clientWidth - 40);
-      const containerHeight = Math.max(300, viewport.clientHeight - 40);
-      const scaleX = containerWidth / unscaledViewport.width;
-      const scaleY = containerHeight / unscaledViewport.height;
-      return Math.min(scaleX, scaleY, 2.0);
+    function buildScrollablePages(total) {
+      if (!scrollTrack || isDocBuilt) return;
+      scrollTrack.innerHTML = "";
+
+      for (let i = 1; i <= total; i++) {
+        const wrapper = document.createElement("div");
+        wrapper.className = `pdf-page-wrapper ${i === 1 ? "is-in-view" : ""}`;
+        wrapper.id = `pdf-page-wrapper-${i}`;
+        wrapper.dataset.pageNum = String(i);
+
+        const meta = document.createElement("div");
+        meta.className = "pdf-page-meta";
+        meta.innerHTML = `
+          <span>PAGE ${String(i).padStart(2, "0")} / ${String(total).padStart(2, "0")}</span>
+          <span>PRASHANT KUMAR · GRAPHIC DESIGN PORTFOLIO</span>
+        `;
+
+        const canvas = document.createElement("canvas");
+        canvas.className = "pdf-page-canvas";
+        canvas.id = `pdf-page-canvas-${i}`;
+        canvas.style.display = "none";
+
+        const placeholder = document.createElement("div");
+        placeholder.className = "pdf-page-placeholder";
+        placeholder.id = `pdf-placeholder-${i}`;
+        placeholder.innerHTML = `<span>Loading Page ${i}...</span>`;
+
+        wrapper.appendChild(meta);
+        wrapper.appendChild(canvas);
+        wrapper.appendChild(placeholder);
+        scrollTrack.appendChild(wrapper);
+      }
+
+      isDocBuilt = true;
+      setupScrollObservers();
     }
 
     async function renderPage(num) {
-      if (!pdfDoc || !canvas) return;
-      pageRendering = true;
+      if (!pdfDoc || renderedPages.has(num) || renderingPages.has(num)) return;
+      renderingPages.add(num);
+
+      const canvas = $(`pdf-page-canvas-${num}`);
+      const placeholder = $(`pdf-placeholder-${num}`);
+      if (!canvas) {
+        renderingPages.delete(num);
+        return;
+      }
 
       try {
         const page = await pdfDoc.getPage(num);
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        // Base viewport on standard 1024.5 x 576 canvas resolution
+        const baseScale = 1.35;
+        const viewportObj = page.getViewport({ scale: baseScale * dpr });
+
+        canvas.width = Math.floor(viewportObj.width);
+        canvas.height = Math.floor(viewportObj.height);
+
         const ctx = canvas.getContext("2d");
-
-        const targetScale = autoFit ? calculateFitScale(page) : scale;
-        const dpr = window.devicePixelRatio || 1;
-        const viewportObj = page.getViewport({ scale: targetScale });
-
-        canvas.width = Math.floor(viewportObj.width * dpr);
-        canvas.height = Math.floor(viewportObj.height * dpr);
-        canvas.style.width = Math.floor(viewportObj.width) + "px";
-        canvas.style.height = Math.floor(viewportObj.height) + "px";
-
-        const renderContext = {
+        await page.render({
           canvasContext: ctx,
           viewport: viewportObj,
-          transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null,
-        };
+        }).promise;
 
-        await page.render(renderContext).promise;
+        renderedPages.add(num);
+        if (placeholder) placeholder.style.display = "none";
+        canvas.style.display = "block";
       } catch (err) {
-        console.error("Page render error:", err);
+        console.error(`Page ${num} render error:`, err);
       } finally {
-        pageRendering = false;
-        if (pageNumPending !== null) {
-          renderPage(pageNumPending);
-          pageNumPending = null;
+        renderingPages.delete(num);
+      }
+    }
+
+    function setupScrollObservers() {
+      if (!("IntersectionObserver" in window)) {
+        // Fallback: render all pages progressively
+        let p = 1;
+        function renderNext() {
+          if (p <= pdfDoc.numPages) {
+            renderPage(p).then(() => {
+              p++;
+              setTimeout(renderNext, 80);
+            });
+          }
         }
+        renderNext();
+        return;
       }
 
-      // Update counters & buttons
-      if (curPageEl) curPageEl.textContent = num;
-      if (prevBtn) prevBtn.disabled = num <= 1;
-      if (nextBtn) nextBtn.disabled = num >= pdfDoc.numPages;
+      // Preload observer: renders pages before they enter viewport
+      const preloadObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const num = parseInt(entry.target.dataset.pageNum, 10);
+              renderPage(num);
+              if (num + 1 <= pdfDoc.numPages) renderPage(num + 1);
+              if (num - 1 >= 1) renderPage(num - 1);
+            }
+          });
+        },
+        {
+          root: viewport,
+          rootMargin: "650px 0px 650px 0px",
+        }
+      );
 
-      // Update active thumbnail
-      updateActiveThumb(num);
+      // Active view observer: detects current visible page
+      const activeObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const num = parseInt(entry.target.dataset.pageNum, 10);
+              currentPage = num;
+
+              if (curPageEl) curPageEl.textContent = num;
+              if (prevBtn) prevBtn.disabled = num <= 1;
+              if (nextBtn) nextBtn.disabled = num >= pdfDoc.numPages;
+
+              updateActiveThumb(num);
+
+              document.querySelectorAll(".pdf-page-wrapper").forEach((w) => {
+                w.classList.toggle("is-in-view", w === entry.target);
+              });
+            }
+          });
+        },
+        {
+          root: viewport,
+          threshold: 0.35,
+        }
+      );
+
+      document.querySelectorAll(".pdf-page-wrapper").forEach((el) => {
+        preloadObserver.observe(el);
+        activeObserver.observe(el);
+      });
     }
 
-    function queueRenderPage(num) {
-      if (pageRendering) {
-        pageNumPending = num;
-      } else {
-        renderPage(num);
+    function scrollToPage(num) {
+      if (!pdfDoc) return;
+      const targetNum = Math.max(1, Math.min(pdfDoc.numPages, num));
+      const target = $(`pdf-page-wrapper-${targetNum}`);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        renderPage(targetNum);
       }
-    }
-
-    function onPrevPage() {
-      if (pageNum <= 1) return;
-      pageNum--;
-      queueRenderPage(pageNum);
-    }
-
-    function onNextPage() {
-      if (!pdfDoc || pageNum >= pdfDoc.numPages) return;
-      pageNum++;
-      queueRenderPage(pageNum);
     }
 
     function buildThumbnails(total) {
@@ -846,12 +740,11 @@
       for (let i = 1; i <= total; i++) {
         const thumb = document.createElement("button");
         thumb.type = "button";
-        thumb.className = `pdf-thumb-pill ${i === pageNum ? "is-active" : ""}`;
+        thumb.className = `pdf-thumb-pill ${i === currentPage ? "is-active" : ""}`;
         thumb.textContent = `P${i}`;
-        thumb.title = `Go to Page ${i}`;
+        thumb.title = `Scroll to Page ${i}`;
         thumb.addEventListener("click", () => {
-          pageNum = i;
-          queueRenderPage(pageNum);
+          scrollToPage(i);
         });
         thumbsTrack.appendChild(thumb);
       }
@@ -867,6 +760,12 @@
           p.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
         }
       });
+    }
+
+    function applyZoom() {
+      if (!scrollTrack) return;
+      const targetWidth = zoomWidths[zoomLevelIndex];
+      scrollTrack.style.maxWidth = `${targetWidth}px`;
     }
 
     function openPdf() {
@@ -888,55 +787,35 @@
       document.body.style.overflow = "";
     }
 
-    // Touch swipe support for mobile
-    viewport?.addEventListener(
-      "touchstart",
-      (e) => {
-        touchStartX = e.changedTouches[0].clientX;
-      },
-      { passive: true }
-    );
-
-    viewport?.addEventListener(
-      "touchend",
-      (e) => {
-        const touchEndX = e.changedTouches[0].clientX;
-        const diffX = touchEndX - touchStartX;
-        if (Math.abs(diffX) > 40) {
-          if (diffX < 0) onNextPage();
-          else onPrevPage();
-        }
-      },
-      { passive: true }
-    );
-
     openBtn?.addEventListener("click", openPdf);
     mobileOpenBtn?.addEventListener("click", openPdf);
     closeBtn?.addEventListener("click", closePdf);
-    prevBtn?.addEventListener("click", onPrevPage);
-    nextBtn?.addEventListener("click", onNextPage);
+
+    prevBtn?.addEventListener("click", () => {
+      scrollToPage(currentPage - 1);
+    });
+
+    nextBtn?.addEventListener("click", () => {
+      scrollToPage(currentPage + 1);
+    });
 
     zoomInBtn?.addEventListener("click", () => {
-      autoFit = false;
-      scale = Math.min(3.0, scale * 1.25);
-      queueRenderPage(pageNum);
+      if (zoomLevelIndex < zoomWidths.length - 1) {
+        zoomLevelIndex++;
+        applyZoom();
+      }
     });
 
     zoomOutBtn?.addEventListener("click", () => {
-      autoFit = false;
-      scale = Math.max(0.4, scale / 1.25);
-      queueRenderPage(pageNum);
+      if (zoomLevelIndex > 0) {
+        zoomLevelIndex--;
+        applyZoom();
+      }
     });
 
     zoomFitBtn?.addEventListener("click", () => {
-      autoFit = true;
-      queueRenderPage(pageNum);
-    });
-
-    window.addEventListener("resize", () => {
-      if (!modal.hidden && autoFit) {
-        queueRenderPage(pageNum);
-      }
+      zoomLevelIndex = 2; // Default 1040px fit
+      applyZoom();
     });
 
     modal.addEventListener("click", (e) => {
@@ -946,18 +825,18 @@
     window.addEventListener("keydown", (e) => {
       if (modal.hidden) return;
       if (e.key === "Escape") closePdf();
-      else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+      else if (e.key === "PageUp") {
         e.preventDefault();
-        onPrevPage();
-      } else if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") {
+        scrollToPage(currentPage - 1);
+      } else if (e.key === "PageDown") {
         e.preventDefault();
-        onNextPage();
+        scrollToPage(currentPage + 1);
       }
     });
   }
 
   /* ==========================================================================
-     8. MOBILE NAVIGATION DRAWER (3-Line Hamburger Menu)
+     6. MOBILE NAVIGATION DRAWER (3-Line Hamburger Menu)
      ========================================================================== */
   function setupMobileNavDrawer() {
     const hamburgerBtn = $("hamburger-btn");
@@ -1012,8 +891,6 @@
   renderTimeline();
   setupReadingProgress();
   setupExpandAllToggle();
-  setupStageMode();
-  setupQrModal();
   setupPortfolioPdfModal();
   setupMobileNavDrawer();
 })();

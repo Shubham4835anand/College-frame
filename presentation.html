@@ -776,7 +776,7 @@
           </div>
 
           <div class="pdf-canvas-viewport" id="pdf-canvas-viewport">
-            <canvas id="pdf-render-canvas" class="pdf-render-canvas"></canvas>
+            <div class="pdf-scroll-track" id="pdf-scroll-track"></div>
           </div>
 
           <div class="pdf-thumbs-bar" id="pdf-thumbs-track" aria-label="Page jump pills"></div>
@@ -796,12 +796,12 @@
         const thumbsNav = document.getElementById("deck-thumbs-nav");
         const fsBtn = document.getElementById("deck-fullscreen-btn");
 
-        // Portfolio PDF Modal (Live Canvas via PDF.js)
+        // Portfolio PDF Modal (Continuous Vertical Scroll via PDF.js)
         const pdfModal = document.getElementById("portfolio-pdf-modal");
         const openPdfBtn = document.getElementById("open-portfolio-pdf-btn");
         const closePdfBtn = document.getElementById("close-portfolio-pdf-btn");
         const pdfViewport = document.getElementById("pdf-canvas-viewport");
-        const pdfCanvas = document.getElementById("pdf-render-canvas");
+        const pdfScrollTrack = document.getElementById("pdf-scroll-track");
         const pdfLoading = document.getElementById("pdf-loading-state");
         const pdfProgress = document.getElementById("pdf-progress-bar");
         const pdfLoadingText = document.getElementById("pdf-loading-text");
@@ -815,11 +815,12 @@
         const pdfThumbs = document.getElementById("pdf-thumbs-track");
 
         let pdfDoc = null;
-        let pdfPageNum = 1;
-        let pdfRendering = false;
-        let pdfPendingNum = null;
-        let pdfScale = 1.0;
-        let pdfAutoFit = true;
+        let pdfCurrentPage = 1;
+        let pdfZoomIndex = 2;
+        const pdfZoomWidths = [680, 840, 1040, 1240, 1480];
+        const pdfRendered = new Set();
+        const pdfRenderingSet = new Set();
+        let pdfBuilt = false;
 
         if (window.pdfjsLib) {
           window.pdfjsLib.GlobalWorkerOptions.workerSrc = "assets/vendor/pdf.worker.min.js";
@@ -828,6 +829,7 @@
         async function loadPortfolioPdf() {
           if (pdfDoc || !window.pdfjsLib) return;
           if (pdfLoading) pdfLoading.hidden = false;
+          if (pdfProgress) pdfProgress.style.width = "15%";
 
           try {
             const task = window.pdfjsLib.getDocument({
@@ -848,8 +850,11 @@
             if (pdfTotalPagesEl) pdfTotalPagesEl.textContent = pdfDoc.numPages;
             if (pdfLoading) pdfLoading.hidden = true;
 
+            buildPdfScrollTrack(pdfDoc.numPages);
             buildPdfThumbs(pdfDoc.numPages);
-            renderPdfPage(pdfPageNum);
+
+            renderScrollPage(1);
+            if (pdfDoc.numPages >= 2) renderScrollPage(2);
           } catch (e) {
             console.error("PDF load error:", e);
             if (pdfLoadingText) {
@@ -858,54 +863,120 @@
           }
         }
 
-        function calculatePdfScale(page) {
-          if (!pdfViewport) return 1.0;
-          const unscaled = page.getViewport({ scale: 1.0 });
-          const cw = Math.max(300, pdfViewport.clientWidth - 40);
-          const ch = Math.max(300, pdfViewport.clientHeight - 40);
-          return Math.min(cw / unscaled.width, ch / unscaled.height, 2.0);
+        function buildPdfScrollTrack(total) {
+          if (!pdfScrollTrack || pdfBuilt) return;
+          pdfScrollTrack.innerHTML = "";
+
+          for (let i = 1; i <= total; i++) {
+            const w = document.createElement("div");
+            w.className = "pdf-page-wrapper" + (i === 1 ? " is-in-view" : "");
+            w.id = "pres-pdf-page-" + i;
+            w.dataset.pageNum = String(i);
+
+            const m = document.createElement("div");
+            m.className = "pdf-page-meta";
+            m.innerHTML = "<span>PAGE " + String(i).padStart(2, "0") + " / " + String(total).padStart(2, "0") + "</span><span>PRASHANT KUMAR · PORTFOLIO</span>";
+
+            const c = document.createElement("canvas");
+            c.className = "pdf-page-canvas";
+            c.id = "pres-pdf-canvas-" + i;
+            c.style.display = "none";
+
+            const ph = document.createElement("div");
+            ph.className = "pdf-page-placeholder";
+            ph.id = "pres-pdf-placeholder-" + i;
+            ph.textContent = "Loading Page " + i + "...";
+
+            w.appendChild(m);
+            w.appendChild(c);
+            w.appendChild(ph);
+            pdfScrollTrack.appendChild(w);
+          }
+
+          pdfBuilt = true;
+          setupPresPdfObservers();
         }
 
-        async function renderPdfPage(num) {
-          if (!pdfDoc || !pdfCanvas) return;
-          pdfRendering = true;
+        async function renderScrollPage(num) {
+          if (!pdfDoc || pdfRendered.has(num) || pdfRenderingSet.has(num)) return;
+          pdfRenderingSet.add(num);
+
+          const canvas = document.getElementById("pres-pdf-canvas-" + num);
+          const ph = document.getElementById("pres-pdf-placeholder-" + num);
+          if (!canvas) {
+            pdfRenderingSet.delete(num);
+            return;
+          }
 
           try {
             const page = await pdfDoc.getPage(num);
-            const ctx = pdfCanvas.getContext("2d");
-            const targetScale = pdfAutoFit ? calculatePdfScale(page) : pdfScale;
-            const dpr = window.devicePixelRatio || 1;
-            const v = page.getViewport({ scale: targetScale });
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            const v = page.getViewport({ scale: 1.35 * dpr });
 
-            pdfCanvas.width = Math.floor(v.width * dpr);
-            pdfCanvas.height = Math.floor(v.height * dpr);
-            pdfCanvas.style.width = Math.floor(v.width) + "px";
-            pdfCanvas.style.height = Math.floor(v.height) + "px";
+            canvas.width = Math.floor(v.width);
+            canvas.height = Math.floor(v.height);
 
-            await page.render({
-              canvasContext: ctx,
-              viewport: v,
-              transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null,
-            }).promise;
+            const ctx = canvas.getContext("2d");
+            await page.render({ canvasContext: ctx, viewport: v }).promise;
+
+            pdfRendered.add(num);
+            if (ph) ph.style.display = "none";
+            canvas.style.display = "block";
           } catch (err) {
-            console.error("Page render error:", err);
+            console.error("Page " + num + " render error:", err);
           } finally {
-            pdfRendering = false;
-            if (pdfPendingNum !== null) {
-              renderPdfPage(pdfPendingNum);
-              pdfPendingNum = null;
-            }
+            pdfRenderingSet.delete(num);
           }
-
-          if (pdfCurPageEl) pdfCurPageEl.textContent = num;
-          if (pdfPrevBtn) pdfPrevBtn.disabled = num <= 1;
-          if (pdfNextBtn) pdfNextBtn.disabled = num >= pdfDoc.numPages;
-          updatePdfThumb(num);
         }
 
-        function queuePdfPage(num) {
-          if (pdfRendering) pdfPendingNum = num;
-          else renderPdfPage(num);
+        function setupPresPdfObservers() {
+          if (!("IntersectionObserver" in window)) {
+            for (let i = 1; i <= pdfDoc.numPages; i++) renderScrollPage(i);
+            return;
+          }
+
+          const preload = new IntersectionObserver((entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                const n = parseInt(e.target.dataset.pageNum, 10);
+                renderScrollPage(n);
+                if (n + 1 <= pdfDoc.numPages) renderScrollPage(n + 1);
+                if (n - 1 >= 1) renderScrollPage(n - 1);
+              }
+            });
+          }, { root: pdfViewport, rootMargin: "650px 0px 650px 0px" });
+
+          const active = new IntersectionObserver((entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                const n = parseInt(e.target.dataset.pageNum, 10);
+                pdfCurrentPage = n;
+                if (pdfCurPageEl) pdfCurPageEl.textContent = n;
+                if (pdfPrevBtn) pdfPrevBtn.disabled = n <= 1;
+                if (pdfNextBtn) pdfNextBtn.disabled = n >= pdfDoc.numPages;
+                updatePdfThumb(n);
+
+                document.querySelectorAll("#pdf-scroll-track .pdf-page-wrapper").forEach((w) => {
+                  w.classList.toggle("is-in-view", w === e.target);
+                });
+              }
+            });
+          }, { root: pdfViewport, threshold: 0.35 });
+
+          document.querySelectorAll("#pdf-scroll-track .pdf-page-wrapper").forEach((el) => {
+            preload.observe(el);
+            active.observe(el);
+          });
+        }
+
+        function scrollToPdfPage(num) {
+          if (!pdfDoc) return;
+          const targetNum = Math.max(1, Math.min(pdfDoc.numPages, num));
+          const el = document.getElementById("pres-pdf-page-" + targetNum);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth", block: "start" });
+            renderScrollPage(targetNum);
+          }
         }
 
         function buildPdfThumbs(total) {
@@ -914,11 +985,10 @@
           for (let i = 1; i <= total; i++) {
             const btn = document.createElement("button");
             btn.type = "button";
-            btn.className = "pdf-thumb-pill" + (i === pdfPageNum ? " is-active" : "");
+            btn.className = "pdf-thumb-pill" + (i === pdfCurrentPage ? " is-active" : "");
             btn.textContent = "P" + i;
             btn.addEventListener("click", () => {
-              pdfPageNum = i;
-              queuePdfPage(pdfPageNum);
+              scrollToPdfPage(i);
             });
             pdfThumbs.appendChild(btn);
           }
@@ -927,10 +997,15 @@
         function updatePdfThumb(num) {
           if (!pdfThumbs) return;
           pdfThumbs.querySelectorAll(".pdf-thumb-pill").forEach((b, idx) => {
-            const active = idx + 1 === num;
-            b.classList.toggle("is-active", active);
-            if (active) b.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+            const isCur = idx + 1 === num;
+            b.classList.toggle("is-active", isCur);
+            if (isCur) b.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
           });
+        }
+
+        function applyPresZoom() {
+          if (!pdfScrollTrack) return;
+          pdfScrollTrack.style.maxWidth = pdfZoomWidths[pdfZoomIndex] + "px";
         }
 
         if (pdfModal && openPdfBtn) {
@@ -947,34 +1022,30 @@
           });
 
           pdfPrevBtn?.addEventListener("click", () => {
-            if (pdfPageNum > 1) {
-              pdfPageNum--;
-              queuePdfPage(pdfPageNum);
-            }
+            scrollToPdfPage(pdfCurrentPage - 1);
           });
 
           pdfNextBtn?.addEventListener("click", () => {
-            if (pdfDoc && pdfPageNum < pdfDoc.numPages) {
-              pdfPageNum++;
-              queuePdfPage(pdfPageNum);
-            }
+            scrollToPdfPage(pdfCurrentPage + 1);
           });
 
           pdfZoomIn?.addEventListener("click", () => {
-            pdfAutoFit = false;
-            pdfScale = Math.min(3.0, pdfScale * 1.25);
-            queuePdfPage(pdfPageNum);
+            if (pdfZoomIndex < pdfZoomWidths.length - 1) {
+              pdfZoomIndex++;
+              applyPresZoom();
+            }
           });
 
           pdfZoomOut?.addEventListener("click", () => {
-            pdfAutoFit = false;
-            pdfScale = Math.max(0.4, pdfScale / 1.25);
-            queuePdfPage(pdfPageNum);
+            if (pdfZoomIndex > 0) {
+              pdfZoomIndex--;
+              applyPresZoom();
+            }
           });
 
           pdfZoomFit?.addEventListener("click", () => {
-            pdfAutoFit = true;
-            queuePdfPage(pdfPageNum);
+            pdfZoomIndex = 2;
+            applyPresZoom();
           });
 
           pdfModal.addEventListener("click", (e) => {
@@ -989,18 +1060,12 @@
             if (e.key === "Escape") {
               pdfModal.hidden = true;
               document.body.style.overflow = "";
-            } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+            } else if (e.key === "PageUp") {
               e.preventDefault();
-              if (pdfPageNum > 1) {
-                pdfPageNum--;
-                queuePdfPage(pdfPageNum);
-              }
-            } else if (e.key === "ArrowRight" || e.key === "PageDown") {
+              scrollToPdfPage(pdfCurrentPage - 1);
+            } else if (e.key === "PageDown") {
               e.preventDefault();
-              if (pdfDoc && pdfPageNum < pdfDoc.numPages) {
-                pdfPageNum++;
-                queuePdfPage(pdfPageNum);
-              }
+              scrollToPdfPage(pdfCurrentPage + 1);
             }
           });
         }
