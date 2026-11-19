@@ -54,7 +54,99 @@
             </svg>
             <span>Portfolio PDF</span>
           </button>
+          <a href="presentation.html" class="nav-pill-btn nav-pill-btn--primary" title="Open 15-Slide Presentation Deck">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            <span>Slides (15)</span>
+          </a>
+          <button type="button" class="nav-pill-btn" id="stage-mode-btn" aria-pressed="false" title="Toggle Stage Mode for auditorium presentations">
+            <span>Stage</span>
+          </button>
+          <button type="button" class="nav-pill-btn" id="open-qr-btn" title="Audience QR Code for smartphones">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            <span>QR</span>
+          </button>
         </nav>
+
+        <!-- 3-Line Hamburger Menu Toggle (Visible on Small Devices) -->
+        <button
+          type="button"
+          class="hamburger-btn"
+          id="hamburger-btn"
+          aria-expanded="false"
+          aria-controls="mobile-nav-drawer"
+          aria-label="Toggle navigation menu"
+        >
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+
+      <!-- Mobile Navigation Drawer -->
+      <div class="mobile-nav-drawer" id="mobile-nav-drawer" hidden role="dialog" aria-modal="true" aria-label="Mobile Navigation Menu">
+        <div class="mobile-nav-backdrop" id="mobile-nav-backdrop"></div>
+        <div class="mobile-nav-panel">
+          <div class="mobile-nav-header">
+            <div class="masthead__brand">
+              <span class="masthead__dot"></span>
+              <span class="masthead__title">Prashant Kumar</span>
+              <span class="masthead__issue">BFA '26</span>
+            </div>
+            <button type="button" class="mobile-nav-close" id="mobile-nav-close" aria-label="Close navigation menu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+          <nav class="mobile-nav-links" aria-label="Mobile navigation links">
+            <a href="#story" class="mobile-nav-link">About</a>
+            <a href="#myth" class="mobile-nav-link">Why Fine Arts</a>
+            <a href="#journey" class="mobile-nav-link">Journey</a>
+            <a href="#work" class="mobile-nav-link">Work & Merch</a>
+            <a href="#placement" class="mobile-nav-link">Placement</a>
+            <a href="#lessons" class="mobile-nav-link">6 Lessons</a>
+            <a href="#connect" class="mobile-nav-link">Connect</a>
+
+            <div class="mobile-nav-actions" style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.65rem;">
+              <button type="button" class="nav-pdf-btn mobile-pdf-btn" id="mobile-open-portfolio-pdf-btn">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+                <span>View Portfolio PDF</span>
+              </button>
+              <a href="presentation.html" class="btn-primary mobile-deck-link" style="justify-content: center; width: 100%;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+                <span>Slide Deck (15 Slides) →</span>
+              </a>
+              <button type="button" class="btn-ghost" id="mobile-open-qr-btn" style="justify-content: center; width: 100%; border: 1px solid var(--rule-strong);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="14" width="7" height="7"></rect>
+                  <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                <span>Audience QR Code</span>
+              </button>
+            </div>
+          </nav>
+        </div>
       </div>
     </header>
 
@@ -119,10 +211,6 @@
                   <line x1="12" y1="5" x2="12" y2="19"></line>
                   <polyline points="19 12 12 19 5 12"></polyline>
                 </svg>
-              </a>
-              <a href="presentation.html" class="btn-outline">
-                <span>View All 15 Slides</span>
-                <span aria-hidden="true">→</span>
               </a>
               <a href="#work" class="btn-ghost">T-Shirt &amp; Brand Work</a>
             </div>
@@ -401,9 +489,6 @@
                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                   </svg>
                 </a>
-                <button type="button" class="btn-outline" id="connect-qr-btn">
-                  Show Audience QR
-                </button>
               </div>
             </div>
 
@@ -476,7 +561,7 @@
       </div>
     </div>
 
-    <!-- FULLSCREEN PORTFOLIO PDF VIEWER WITH TOP-RIGHT CROSS BAR -->
+    <!-- FULLSCREEN PORTFOLIO PDF VIEWER (LIVE CANVAS RENDERER VIA PDF.JS) -->
     <div
       class="pdf-modal-backdrop"
       id="portfolio-pdf-modal"
@@ -489,11 +574,33 @@
         <div class="pdf-modal-topbar">
           <div class="pdf-modal-title-wrap">
             <span class="mono-label">PORTFOLIO VIEWER</span>
-            <span class="pdf-modal-filename">Graphic Design Portfolio (prashant).pdf</span>
+            <span class="pdf-modal-filename">Graphic Design Portfolio · Prashant Kumar</span>
           </div>
+
+          <div class="pdf-modal-toolbar">
+            <button type="button" class="pdf-toolbar-btn" id="pdf-prev-page" title="Previous page (Left arrow)">
+              ← Prev
+            </button>
+            <span class="pdf-page-indicator" id="pdf-page-indicator">
+              Page <span id="pdf-current-page">1</span> / <span id="pdf-total-pages">30</span>
+            </span>
+            <button type="button" class="pdf-toolbar-btn" id="pdf-next-page" title="Next page (Right arrow)">
+              Next →
+            </button>
+            <button type="button" class="pdf-toolbar-btn" id="pdf-zoom-out" title="Zoom out" style="padding: 0.32rem 0.5rem;">
+              −
+            </button>
+            <button type="button" class="pdf-toolbar-btn" id="pdf-zoom-in" title="Zoom in" style="padding: 0.32rem 0.5rem;">
+              +
+            </button>
+            <button type="button" class="pdf-toolbar-btn" id="pdf-zoom-fit" title="Fit width / Reset">
+              Fit
+            </button>
+          </div>
+
           <div class="pdf-modal-actions">
             <a
-              href="Graphic%20Design%20Portfolio%20(prashant).pdf"
+              href="portfolio.pdf"
               target="_blank"
               rel="noopener noreferrer"
               class="pdf-modal-action-btn"
@@ -505,6 +612,19 @@
                 <line x1="10" y1="14" x2="21" y2="3"></line>
               </svg>
               <span>Open in New Tab</span>
+            </a>
+            <a
+              href="portfolio.pdf"
+              download="Graphic Design Portfolio (Prashant Kumar).pdf"
+              class="pdf-modal-action-btn"
+              title="Download portfolio PDF directly"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download</span>
             </a>
             <button
               type="button"
@@ -520,17 +640,26 @@
             </button>
           </div>
         </div>
+
         <div class="pdf-modal-content">
-          <iframe
-            id="portfolio-pdf-iframe"
-            data-src="Graphic%20Design%20Portfolio%20(prashant).pdf#view=FitH"
-            title="Graphic Design Portfolio PDF"
-            class="pdf-viewer-iframe"
-          ></iframe>
+          <div class="pdf-loading-state" id="pdf-loading-state">
+            <div class="pdf-loading-spinner"></div>
+            <div class="pdf-loading-text" id="pdf-loading-text">Loading Graphic Design Portfolio...</div>
+            <div class="pdf-progress-bar-wrap">
+              <div class="pdf-progress-bar" id="pdf-progress-bar"></div>
+            </div>
+          </div>
+
+          <div class="pdf-canvas-viewport" id="pdf-canvas-viewport">
+            <canvas id="pdf-render-canvas" class="pdf-render-canvas"></canvas>
+          </div>
+
+          <div class="pdf-thumbs-bar" id="pdf-thumbs-track" aria-label="Page jump pills"></div>
         </div>
       </div>
     </div>
 
+    <script src="assets/vendor/pdf.min.js"></script>
     <script src="data.js"></script>
     <script src="app.js"></script>
   </body>

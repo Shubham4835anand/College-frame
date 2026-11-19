@@ -598,6 +598,7 @@
   function setupQrModal() {
     const modal = $("qr-modal");
     const openBtn = $("open-qr-btn");
+    const mobileQrBtn = $("mobile-open-qr-btn");
     const connectQrBtn = $("connect-qr-btn");
     const closeBtn = $("close-qr-btn");
     const qrImg = $("qr-image");
@@ -614,6 +615,12 @@
     }
 
     function openModal() {
+      const drawer = $("mobile-nav-drawer");
+      if (drawer && !drawer.hidden) {
+        drawer.hidden = true;
+        $("hamburger-btn")?.setAttribute("aria-expanded", "false");
+      }
+
       const url = resolveShareUrl();
       if (urlInput) urlInput.value = url;
 
@@ -650,6 +657,7 @@
     }
 
     openBtn?.addEventListener("click", openModal);
+    mobileQrBtn?.addEventListener("click", openModal);
     connectQrBtn?.addEventListener("click", openModal);
     closeBtn?.addEventListener("click", closeModal);
 
@@ -678,23 +686,201 @@
   }
 
   /* ==========================================================================
-     7. GRAPHIC DESIGN PORTFOLIO PDF VIEWER MODAL
+     7. GRAPHIC DESIGN PORTFOLIO PDF VIEWER (LIVE CANVAS VIA PDF.JS)
      ========================================================================== */
   function setupPortfolioPdfModal() {
     const modal = $("portfolio-pdf-modal");
     const openBtn = $("open-portfolio-pdf-btn");
+    const mobileOpenBtn = $("mobile-open-portfolio-pdf-btn");
     const closeBtn = $("close-portfolio-pdf-btn");
-    const iframe = $("portfolio-pdf-iframe");
+    const viewport = $("pdf-canvas-viewport");
+    const canvas = $("pdf-render-canvas");
+    const loadingState = $("pdf-loading-state");
+    const progressBar = $("pdf-progress-bar");
+    const loadingText = $("pdf-loading-text");
+    const prevBtn = $("pdf-prev-page");
+    const nextBtn = $("pdf-next-page");
+    const curPageEl = $("pdf-current-page");
+    const totalPagesEl = $("pdf-total-pages");
+    const zoomInBtn = $("pdf-zoom-in");
+    const zoomOutBtn = $("pdf-zoom-out");
+    const zoomFitBtn = $("pdf-zoom-fit");
+    const thumbsTrack = $("pdf-thumbs-track");
 
-    if (!modal || !openBtn) return;
+    if (!modal) return;
+
+    let pdfDoc = null;
+    let pageNum = 1;
+    let pageRendering = false;
+    let pageNumPending = null;
+    let scale = 1.0;
+    let autoFit = true;
+    let touchStartX = 0;
+
+    // Configure PDF.js worker
+    if (window.pdfjsLib) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = "assets/vendor/pdf.worker.min.js";
+    }
+
+    async function loadPdfDocument() {
+      if (pdfDoc) return;
+
+      if (!window.pdfjsLib) {
+        if (loadingText) loadingText.textContent = "Loading viewer engine...";
+        return;
+      }
+
+      if (loadingState) loadingState.hidden = false;
+      if (loadingText) loadingText.textContent = "Loading Graphic Design Portfolio...";
+      if (progressBar) progressBar.style.width = "10%";
+
+      try {
+        const loadingTask = window.pdfjsLib.getDocument({
+          url: "portfolio.pdf",
+          cMapUrl: "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/",
+          cMapPacked: true,
+        });
+
+        loadingTask.onProgress = function (progress) {
+          if (progress.total > 0 && progressBar) {
+            const percent = Math.min(100, Math.round((progress.loaded / progress.total) * 100));
+            progressBar.style.width = percent + "%";
+            if (loadingText) loadingText.textContent = `Loading Portfolio... ${percent}%`;
+          }
+        };
+
+        pdfDoc = await loadingTask.promise;
+
+        if (totalPagesEl) totalPagesEl.textContent = pdfDoc.numPages;
+        if (loadingState) loadingState.hidden = true;
+
+        buildThumbnails(pdfDoc.numPages);
+        renderPage(pageNum);
+      } catch (err) {
+        console.error("PDF load error:", err);
+        if (loadingText) {
+          loadingText.innerHTML = `
+            <div style="color: #f87171; margin-bottom: 0.75rem;">Unable to display inline canvas preview.</div>
+            <a href="portfolio.pdf" target="_blank" class="btn-primary" style="display: inline-flex;">Open Graphic Design Portfolio PDF</a>
+          `;
+        }
+      }
+    }
+
+    function calculateFitScale(page) {
+      if (!viewport) return 1.0;
+      const unscaledViewport = page.getViewport({ scale: 1.0 });
+      const containerWidth = Math.max(300, viewport.clientWidth - 40);
+      const containerHeight = Math.max(300, viewport.clientHeight - 40);
+      const scaleX = containerWidth / unscaledViewport.width;
+      const scaleY = containerHeight / unscaledViewport.height;
+      return Math.min(scaleX, scaleY, 2.0);
+    }
+
+    async function renderPage(num) {
+      if (!pdfDoc || !canvas) return;
+      pageRendering = true;
+
+      try {
+        const page = await pdfDoc.getPage(num);
+        const ctx = canvas.getContext("2d");
+
+        const targetScale = autoFit ? calculateFitScale(page) : scale;
+        const dpr = window.devicePixelRatio || 1;
+        const viewportObj = page.getViewport({ scale: targetScale });
+
+        canvas.width = Math.floor(viewportObj.width * dpr);
+        canvas.height = Math.floor(viewportObj.height * dpr);
+        canvas.style.width = Math.floor(viewportObj.width) + "px";
+        canvas.style.height = Math.floor(viewportObj.height) + "px";
+
+        const renderContext = {
+          canvasContext: ctx,
+          viewport: viewportObj,
+          transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null,
+        };
+
+        await page.render(renderContext).promise;
+      } catch (err) {
+        console.error("Page render error:", err);
+      } finally {
+        pageRendering = false;
+        if (pageNumPending !== null) {
+          renderPage(pageNumPending);
+          pageNumPending = null;
+        }
+      }
+
+      // Update counters & buttons
+      if (curPageEl) curPageEl.textContent = num;
+      if (prevBtn) prevBtn.disabled = num <= 1;
+      if (nextBtn) nextBtn.disabled = num >= pdfDoc.numPages;
+
+      // Update active thumbnail
+      updateActiveThumb(num);
+    }
+
+    function queueRenderPage(num) {
+      if (pageRendering) {
+        pageNumPending = num;
+      } else {
+        renderPage(num);
+      }
+    }
+
+    function onPrevPage() {
+      if (pageNum <= 1) return;
+      pageNum--;
+      queueRenderPage(pageNum);
+    }
+
+    function onNextPage() {
+      if (!pdfDoc || pageNum >= pdfDoc.numPages) return;
+      pageNum++;
+      queueRenderPage(pageNum);
+    }
+
+    function buildThumbnails(total) {
+      if (!thumbsTrack) return;
+      thumbsTrack.innerHTML = "";
+      for (let i = 1; i <= total; i++) {
+        const thumb = document.createElement("button");
+        thumb.type = "button";
+        thumb.className = `pdf-thumb-pill ${i === pageNum ? "is-active" : ""}`;
+        thumb.textContent = `P${i}`;
+        thumb.title = `Go to Page ${i}`;
+        thumb.addEventListener("click", () => {
+          pageNum = i;
+          queueRenderPage(pageNum);
+        });
+        thumbsTrack.appendChild(thumb);
+      }
+    }
+
+    function updateActiveThumb(num) {
+      if (!thumbsTrack) return;
+      const pills = thumbsTrack.querySelectorAll(".pdf-thumb-pill");
+      pills.forEach((p, idx) => {
+        const active = idx + 1 === num;
+        p.classList.toggle("is-active", active);
+        if (active) {
+          p.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        }
+      });
+    }
 
     function openPdf() {
-      if (iframe && !iframe.src && iframe.dataset.src) {
-        iframe.src = iframe.dataset.src;
+      const drawer = $("mobile-nav-drawer");
+      if (drawer && !drawer.hidden) {
+        drawer.hidden = true;
+        $("hamburger-btn")?.setAttribute("aria-expanded", "false");
       }
+
       modal.hidden = false;
       document.body.style.overflow = "hidden";
       closeBtn?.focus();
+
+      loadPdfDocument();
     }
 
     function closePdf() {
@@ -702,15 +888,119 @@
       document.body.style.overflow = "";
     }
 
-    openBtn.addEventListener("click", openPdf);
+    // Touch swipe support for mobile
+    viewport?.addEventListener(
+      "touchstart",
+      (e) => {
+        touchStartX = e.changedTouches[0].clientX;
+      },
+      { passive: true }
+    );
+
+    viewport?.addEventListener(
+      "touchend",
+      (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const diffX = touchEndX - touchStartX;
+        if (Math.abs(diffX) > 40) {
+          if (diffX < 0) onNextPage();
+          else onPrevPage();
+        }
+      },
+      { passive: true }
+    );
+
+    openBtn?.addEventListener("click", openPdf);
+    mobileOpenBtn?.addEventListener("click", openPdf);
     closeBtn?.addEventListener("click", closePdf);
+    prevBtn?.addEventListener("click", onPrevPage);
+    nextBtn?.addEventListener("click", onNextPage);
+
+    zoomInBtn?.addEventListener("click", () => {
+      autoFit = false;
+      scale = Math.min(3.0, scale * 1.25);
+      queueRenderPage(pageNum);
+    });
+
+    zoomOutBtn?.addEventListener("click", () => {
+      autoFit = false;
+      scale = Math.max(0.4, scale / 1.25);
+      queueRenderPage(pageNum);
+    });
+
+    zoomFitBtn?.addEventListener("click", () => {
+      autoFit = true;
+      queueRenderPage(pageNum);
+    });
+
+    window.addEventListener("resize", () => {
+      if (!modal.hidden && autoFit) {
+        queueRenderPage(pageNum);
+      }
+    });
 
     modal.addEventListener("click", (e) => {
       if (e.target === modal) closePdf();
     });
 
     window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !modal.hidden) closePdf();
+      if (modal.hidden) return;
+      if (e.key === "Escape") closePdf();
+      else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+        e.preventDefault();
+        onPrevPage();
+      } else if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") {
+        e.preventDefault();
+        onNextPage();
+      }
+    });
+  }
+
+  /* ==========================================================================
+     8. MOBILE NAVIGATION DRAWER (3-Line Hamburger Menu)
+     ========================================================================== */
+  function setupMobileNavDrawer() {
+    const hamburgerBtn = $("hamburger-btn");
+    const drawer = $("mobile-nav-drawer");
+    const closeBtn = $("mobile-nav-close");
+    const backdrop = $("mobile-nav-backdrop");
+    const navLinks = document.querySelectorAll(".mobile-nav-link");
+
+    if (!hamburgerBtn || !drawer) return;
+
+    function openDrawer() {
+      drawer.hidden = false;
+      hamburgerBtn.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeDrawer() {
+      drawer.hidden = true;
+      hamburgerBtn.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+    }
+
+    hamburgerBtn.addEventListener("click", () => {
+      if (drawer.hidden) {
+        openDrawer();
+      } else {
+        closeDrawer();
+      }
+    });
+
+    closeBtn?.addEventListener("click", closeDrawer);
+    backdrop?.addEventListener("click", closeDrawer);
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        closeDrawer();
+      });
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !drawer.hidden) {
+        closeDrawer();
+      }
     });
   }
 
@@ -725,4 +1015,5 @@
   setupStageMode();
   setupQrModal();
   setupPortfolioPdfModal();
+  setupMobileNavDrawer();
 })();

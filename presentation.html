@@ -686,7 +686,7 @@
       </div>
     </footer>
 
-    <!-- FULLSCREEN PORTFOLIO PDF VIEWER WITH TOP-RIGHT CROSS BAR -->
+    <!-- FULLSCREEN PORTFOLIO PDF VIEWER (LIVE CANVAS RENDERER VIA PDF.JS) -->
     <div
       class="pdf-modal-backdrop"
       id="portfolio-pdf-modal"
@@ -699,11 +699,33 @@
         <div class="pdf-modal-topbar">
           <div class="pdf-modal-title-wrap">
             <span class="mono-label">PORTFOLIO VIEWER</span>
-            <span class="pdf-modal-filename">Graphic Design Portfolio (prashant).pdf</span>
+            <span class="pdf-modal-filename">Graphic Design Portfolio · Prashant Kumar</span>
           </div>
+
+          <div class="pdf-modal-toolbar">
+            <button type="button" class="pdf-toolbar-btn" id="pdf-prev-page" title="Previous page (Left arrow)">
+              ← Prev
+            </button>
+            <span class="pdf-page-indicator" id="pdf-page-indicator">
+              Page <span id="pdf-current-page">1</span> / <span id="pdf-total-pages">30</span>
+            </span>
+            <button type="button" class="pdf-toolbar-btn" id="pdf-next-page" title="Next page (Right arrow)">
+              Next →
+            </button>
+            <button type="button" class="pdf-toolbar-btn" id="pdf-zoom-out" title="Zoom out" style="padding: 0.32rem 0.5rem;">
+              −
+            </button>
+            <button type="button" class="pdf-toolbar-btn" id="pdf-zoom-in" title="Zoom in" style="padding: 0.32rem 0.5rem;">
+              +
+            </button>
+            <button type="button" class="pdf-toolbar-btn" id="pdf-zoom-fit" title="Fit width / Reset">
+              Fit
+            </button>
+          </div>
+
           <div class="pdf-modal-actions">
             <a
-              href="Graphic%20Design%20Portfolio%20(prashant).pdf"
+              href="portfolio.pdf"
               target="_blank"
               rel="noopener noreferrer"
               class="pdf-modal-action-btn"
@@ -715,6 +737,19 @@
                 <line x1="10" y1="14" x2="21" y2="3"></line>
               </svg>
               <span>Open in New Tab</span>
+            </a>
+            <a
+              href="portfolio.pdf"
+              download="Graphic Design Portfolio (Prashant Kumar).pdf"
+              class="pdf-modal-action-btn"
+              title="Download portfolio PDF directly"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download</span>
             </a>
             <button
               type="button"
@@ -730,17 +765,26 @@
             </button>
           </div>
         </div>
+
         <div class="pdf-modal-content">
-          <iframe
-            id="portfolio-pdf-iframe"
-            data-src="Graphic%20Design%20Portfolio%20(prashant).pdf#view=FitH"
-            title="Graphic Design Portfolio PDF"
-            class="pdf-viewer-iframe"
-          ></iframe>
+          <div class="pdf-loading-state" id="pdf-loading-state">
+            <div class="pdf-loading-spinner"></div>
+            <div class="pdf-loading-text" id="pdf-loading-text">Loading Graphic Design Portfolio...</div>
+            <div class="pdf-progress-bar-wrap">
+              <div class="pdf-progress-bar" id="pdf-progress-bar"></div>
+            </div>
+          </div>
+
+          <div class="pdf-canvas-viewport" id="pdf-canvas-viewport">
+            <canvas id="pdf-render-canvas" class="pdf-render-canvas"></canvas>
+          </div>
+
+          <div class="pdf-thumbs-bar" id="pdf-thumbs-track" aria-label="Page jump pills"></div>
         </div>
       </div>
     </div>
 
+    <script src="assets/vendor/pdf.min.js"></script>
     <script>
       (function () {
         const totalSlides = 15;
@@ -752,29 +796,211 @@
         const thumbsNav = document.getElementById("deck-thumbs-nav");
         const fsBtn = document.getElementById("deck-fullscreen-btn");
 
-        // Portfolio PDF Modal
+        // Portfolio PDF Modal (Live Canvas via PDF.js)
         const pdfModal = document.getElementById("portfolio-pdf-modal");
         const openPdfBtn = document.getElementById("open-portfolio-pdf-btn");
         const closePdfBtn = document.getElementById("close-portfolio-pdf-btn");
-        const pdfIframe = document.getElementById("portfolio-pdf-iframe");
+        const pdfViewport = document.getElementById("pdf-canvas-viewport");
+        const pdfCanvas = document.getElementById("pdf-render-canvas");
+        const pdfLoading = document.getElementById("pdf-loading-state");
+        const pdfProgress = document.getElementById("pdf-progress-bar");
+        const pdfLoadingText = document.getElementById("pdf-loading-text");
+        const pdfPrevBtn = document.getElementById("pdf-prev-page");
+        const pdfNextBtn = document.getElementById("pdf-next-page");
+        const pdfCurPageEl = document.getElementById("pdf-current-page");
+        const pdfTotalPagesEl = document.getElementById("pdf-total-pages");
+        const pdfZoomIn = document.getElementById("pdf-zoom-in");
+        const pdfZoomOut = document.getElementById("pdf-zoom-out");
+        const pdfZoomFit = document.getElementById("pdf-zoom-fit");
+        const pdfThumbs = document.getElementById("pdf-thumbs-track");
+
+        let pdfDoc = null;
+        let pdfPageNum = 1;
+        let pdfRendering = false;
+        let pdfPendingNum = null;
+        let pdfScale = 1.0;
+        let pdfAutoFit = true;
+
+        if (window.pdfjsLib) {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = "assets/vendor/pdf.worker.min.js";
+        }
+
+        async function loadPortfolioPdf() {
+          if (pdfDoc || !window.pdfjsLib) return;
+          if (pdfLoading) pdfLoading.hidden = false;
+
+          try {
+            const task = window.pdfjsLib.getDocument({
+              url: "portfolio.pdf",
+              cMapUrl: "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/",
+              cMapPacked: true,
+            });
+
+            task.onProgress = function (p) {
+              if (p.total > 0 && pdfProgress) {
+                const percent = Math.min(100, Math.round((p.loaded / p.total) * 100));
+                pdfProgress.style.width = percent + "%";
+                if (pdfLoadingText) pdfLoadingText.textContent = "Loading Portfolio... " + percent + "%";
+              }
+            };
+
+            pdfDoc = await task.promise;
+            if (pdfTotalPagesEl) pdfTotalPagesEl.textContent = pdfDoc.numPages;
+            if (pdfLoading) pdfLoading.hidden = true;
+
+            buildPdfThumbs(pdfDoc.numPages);
+            renderPdfPage(pdfPageNum);
+          } catch (e) {
+            console.error("PDF load error:", e);
+            if (pdfLoadingText) {
+              pdfLoadingText.innerHTML = '<a href="portfolio.pdf" target="_blank" class="btn-primary">Open Portfolio PDF</a>';
+            }
+          }
+        }
+
+        function calculatePdfScale(page) {
+          if (!pdfViewport) return 1.0;
+          const unscaled = page.getViewport({ scale: 1.0 });
+          const cw = Math.max(300, pdfViewport.clientWidth - 40);
+          const ch = Math.max(300, pdfViewport.clientHeight - 40);
+          return Math.min(cw / unscaled.width, ch / unscaled.height, 2.0);
+        }
+
+        async function renderPdfPage(num) {
+          if (!pdfDoc || !pdfCanvas) return;
+          pdfRendering = true;
+
+          try {
+            const page = await pdfDoc.getPage(num);
+            const ctx = pdfCanvas.getContext("2d");
+            const targetScale = pdfAutoFit ? calculatePdfScale(page) : pdfScale;
+            const dpr = window.devicePixelRatio || 1;
+            const v = page.getViewport({ scale: targetScale });
+
+            pdfCanvas.width = Math.floor(v.width * dpr);
+            pdfCanvas.height = Math.floor(v.height * dpr);
+            pdfCanvas.style.width = Math.floor(v.width) + "px";
+            pdfCanvas.style.height = Math.floor(v.height) + "px";
+
+            await page.render({
+              canvasContext: ctx,
+              viewport: v,
+              transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null,
+            }).promise;
+          } catch (err) {
+            console.error("Page render error:", err);
+          } finally {
+            pdfRendering = false;
+            if (pdfPendingNum !== null) {
+              renderPdfPage(pdfPendingNum);
+              pdfPendingNum = null;
+            }
+          }
+
+          if (pdfCurPageEl) pdfCurPageEl.textContent = num;
+          if (pdfPrevBtn) pdfPrevBtn.disabled = num <= 1;
+          if (pdfNextBtn) pdfNextBtn.disabled = num >= pdfDoc.numPages;
+          updatePdfThumb(num);
+        }
+
+        function queuePdfPage(num) {
+          if (pdfRendering) pdfPendingNum = num;
+          else renderPdfPage(num);
+        }
+
+        function buildPdfThumbs(total) {
+          if (!pdfThumbs) return;
+          pdfThumbs.innerHTML = "";
+          for (let i = 1; i <= total; i++) {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "pdf-thumb-pill" + (i === pdfPageNum ? " is-active" : "");
+            btn.textContent = "P" + i;
+            btn.addEventListener("click", () => {
+              pdfPageNum = i;
+              queuePdfPage(pdfPageNum);
+            });
+            pdfThumbs.appendChild(btn);
+          }
+        }
+
+        function updatePdfThumb(num) {
+          if (!pdfThumbs) return;
+          pdfThumbs.querySelectorAll(".pdf-thumb-pill").forEach((b, idx) => {
+            const active = idx + 1 === num;
+            b.classList.toggle("is-active", active);
+            if (active) b.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+          });
+        }
 
         if (pdfModal && openPdfBtn) {
           openPdfBtn.addEventListener("click", () => {
-            if (pdfIframe && !pdfIframe.src && pdfIframe.dataset.src) {
-              pdfIframe.src = pdfIframe.dataset.src;
-            }
             pdfModal.hidden = false;
             document.body.style.overflow = "hidden";
             closePdfBtn?.focus();
+            loadPortfolioPdf();
           });
+
           closePdfBtn?.addEventListener("click", () => {
             pdfModal.hidden = true;
             document.body.style.overflow = "";
           });
+
+          pdfPrevBtn?.addEventListener("click", () => {
+            if (pdfPageNum > 1) {
+              pdfPageNum--;
+              queuePdfPage(pdfPageNum);
+            }
+          });
+
+          pdfNextBtn?.addEventListener("click", () => {
+            if (pdfDoc && pdfPageNum < pdfDoc.numPages) {
+              pdfPageNum++;
+              queuePdfPage(pdfPageNum);
+            }
+          });
+
+          pdfZoomIn?.addEventListener("click", () => {
+            pdfAutoFit = false;
+            pdfScale = Math.min(3.0, pdfScale * 1.25);
+            queuePdfPage(pdfPageNum);
+          });
+
+          pdfZoomOut?.addEventListener("click", () => {
+            pdfAutoFit = false;
+            pdfScale = Math.max(0.4, pdfScale / 1.25);
+            queuePdfPage(pdfPageNum);
+          });
+
+          pdfZoomFit?.addEventListener("click", () => {
+            pdfAutoFit = true;
+            queuePdfPage(pdfPageNum);
+          });
+
           pdfModal.addEventListener("click", (e) => {
             if (e.target === pdfModal) {
               pdfModal.hidden = true;
               document.body.style.overflow = "";
+            }
+          });
+
+          window.addEventListener("keydown", (e) => {
+            if (pdfModal.hidden) return;
+            if (e.key === "Escape") {
+              pdfModal.hidden = true;
+              document.body.style.overflow = "";
+            } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+              e.preventDefault();
+              if (pdfPageNum > 1) {
+                pdfPageNum--;
+                queuePdfPage(pdfPageNum);
+              }
+            } else if (e.key === "ArrowRight" || e.key === "PageDown") {
+              e.preventDefault();
+              if (pdfDoc && pdfPageNum < pdfDoc.numPages) {
+                pdfPageNum++;
+                queuePdfPage(pdfPageNum);
+              }
             }
           });
         }
